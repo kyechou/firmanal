@@ -43,6 +43,6 @@ timeout --preserve-status --signal SIGINT 30 "${VM_SCRIPT_DIR}/run.${ARCH}.sh" "
 sleep 1
 
 echo "Inferring network..."
-"${VM_SCRIPT_DIR}/makeNetwork.py" -i "${IID}" -q -o -a "${ARCH}" -S "${SCRATCH_DIR}"
+"${VM_SCRIPT_DIR}/makeNetwork.py" -i "${IID}" -q -o -a "${ARCH}" -S "${VM_DIR}"
 
 echo "Done!"
