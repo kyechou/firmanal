@@ -129,6 +129,15 @@ def process(iid, infile):
 
     dbh.close()
 
+def getarch (infile):
+    if os.path.isfile('./getArch.sh'):
+        os.system ('./getArch.sh {0}'.format(infile))
+    elif os.path.isfile('./db/getArch.sh'):
+        os.system ('./db/getArch.sh {0}'.format(infile))
+    else:
+        print ('cannot find getArch.sh')
+        sys.exit (1)
+
 def main():
     infile = iid = None
     opts, argv = getopt.getopt(sys.argv[1:], "f:i:")
@@ -143,7 +152,7 @@ def main():
         if m:
             iid = int(m.groups(1))
 
-    os.system ('./getArch.sh {0}'.format(infile))
+    getarch (infile)
     process(iid, infile)
 
 if __name__ == "__main__":
