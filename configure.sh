@@ -6,7 +6,6 @@ MAIN_DIR=/home/niorehkids/firmanal
 # specify full paths to other directories
 BINARY_DIR=${MAIN_DIR}/bin
 DB_DIR=${MAIN_DIR}/db
-EXTRACTOR_DIR=${MAIN_DIR}/extractor
 VM_DIR=${MAIN_DIR}/qemu/vm
 SCRIPT_DIR=${MAIN_DIR}/scripts
 FIRMWARE_DIR=${MAIN_DIR}/firm
