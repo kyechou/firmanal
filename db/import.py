@@ -143,6 +143,7 @@ def main():
         if m:
             iid = int(m.groups(1))
 
+    os.system ('./getArch.sh {0}'.format(infile))
     process(iid, infile)
 
 if __name__ == "__main__":
