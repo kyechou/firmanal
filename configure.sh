@@ -7,6 +7,7 @@ MAIN_DIR=/home/niorehkids/firmanal
 BINARY_DIR=${MAIN_DIR}/bin
 DB_DIR=${MAIN_DIR}/db
 VM_DIR=${MAIN_DIR}/qemu/vm
+VM_SCRIPT_DIR=${MAIN_DIR}/qemu/scripts
 SCRIPT_DIR=${MAIN_DIR}/scripts
 FIRMWARE_DIR=${MAIN_DIR}/firm
 
