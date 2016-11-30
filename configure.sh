@@ -9,7 +9,7 @@ DB_DIR=${MAIN_DIR}/db
 VM_DIR=${MAIN_DIR}/qemu/vm
 VM_SCRIPT_DIR=${MAIN_DIR}/qemu/scripts
 SCRIPT_DIR=${MAIN_DIR}/scripts
-FIRMWARE_DIR=${MAIN_DIR}/firm
+FIRMWARE_DIR=${MAIN_DIR}/images
 
 # functions to safely compute other paths
 
