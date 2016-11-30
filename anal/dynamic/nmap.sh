@@ -6,6 +6,8 @@ if [ -e ../../configure.sh ]; then
     source ../../configure.sh
 elif [ -e ../configure.sh ]; then
     source ../configure.sh
+elif [ -e ./configure.sh ]; then
+    source ./configure.sh
 else
     echo "Error: Could not find 'configure.sh'!"
     exit 1
