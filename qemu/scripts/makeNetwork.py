@@ -25,9 +25,9 @@ VLANID=%(VLANID)i
 TAPDEV=tap${IID}
 HOSTNETDEV=${TAPDEV}
 
-FIRMADYNE_PATH=%(FIRMADYNE_PATH)s
-if [[ -e "${FIRMADYNE_PATH}/configure.sh" ]]; then
-    . "${FIRMADYNE_PATH}/configure.sh"
+MAIN_DIR=%(MAIN_DIR)s
+if [[ -e "${MAIN_DIR}/configure.sh" ]]; then
+    . "${MAIN_DIR}/configure.sh"
 else
     echo "Error: Could not find 'configure.sh'!"
     exit 1
@@ -38,7 +38,7 @@ KERNEL=`get_kernel ${ARCHEND}`
 QEMU=`get_qemu ${ARCHEND}`
 QEMU_MACHINE=`get_qemu_machine ${ARCHEND}`
 QEMU_ROOTFS=`get_qemu_disk ${ARCHEND}`
-WORK_DIR=`get_scratch ${IID}`
+WORK_DIR=`get_vm ${IID}`
 
 echo "Creating TAP device ${TAPDEV}..."
 [[ -z "$(ip link | grep ${TAPDEV})" ]] && \\
@@ -89,9 +89,9 @@ VLANID=%(VLANID)i
 TAPDEV=tap${IID}
 HOSTNETDEV=${TAPDEV}
 
-FIRMADYNE_PATH=%(FIRMADYNE_PATH)s
-if [[ -e "${FIRMADYNE_PATH}/configure.sh" ]]; then
-    . "${FIRMADYNE_PATH}/configure.sh"
+MAIN_DIR=%(MAIN_DIR)s
+if [[ -e "${MAIN_DIR}/configure.sh" ]]; then
+    . "${MAIN_DIR}/configure.sh"
 else
     echo "Error: Could not find 'configure.sh'!"
     exit 1
@@ -102,7 +102,7 @@ KERNEL=`get_kernel ${ARCHEND}`
 QEMU=`get_qemu ${ARCHEND}`
 QEMU_MACHINE=`get_qemu_machine ${ARCHEND}`
 QEMU_ROOTFS=`get_qemu_disk ${ARCHEND}`
-WORK_DIR=`get_scratch ${IID}`
+WORK_DIR=`get_vm ${IID}`
 
 [[ ${HASVLAN} -ne 0 ]] && HOSTNETDEV=${TAPDEV}.${VLANID}
 
@@ -283,7 +283,7 @@ def qemuCmd(iid, network, arch, endianness, cate):
                                   'QEMU_DISK' : qemuDisk,
                                   'QEMU_NETWORK' : qemuNetworkConfig(netdev, mac),
                                   'QEMU_ENV_VARS' : qemuEnvVars,
-                                  'FIRMADYNE_PATH' : os.path.abspath(os.path.dirname(__file__) + '/..')}
+                                  'MAIN_DIR' : os.path.abspath(os.path.dirname(__file__) + '/../..')}
     elif cate == 'terminate':
         return QEMUTERMINATETEMPLATE % {'IID': iid, 'GUESTIP': ip, 'NETDEVIP': closeIp(ip),
                                         'HASVLAN' : hasVlan, 'VLANID': vlan_id,
@@ -291,7 +291,7 @@ def qemuCmd(iid, network, arch, endianness, cate):
                                         'QEMU_DISK' : qemuDisk,
                                         'QEMU_NETWORK' : qemuNetworkConfig(netdev, mac),
                                         'QEMU_ENV_VARS' : qemuEnvVars,
-                                        'FIRMADYNE_PATH' : os.path.abspath(os.path.dirname(__file__) + '/..')}
+                                        'MAIN_DIR' : os.path.abspath(os.path.dirname(__file__) + '/../..')}
     else:
         raise Exception("Unknown script type")
 
