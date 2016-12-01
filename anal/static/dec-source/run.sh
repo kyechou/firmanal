@@ -36,4 +36,9 @@ if [ ! -d ${RESULT_DIR} ]; then
 	mkdir -p ${RESULT_DIR}
 fi
 
+# extract the files from the image tarball according to the database information
 tar xf ${FIRMWARE_DIR}/${IID}.tar.gz -C ${EXTRACT_DIR} $(psql -U firmadyne -d firmware -c "select filename from object_to_image where mime='application/x-executable; charset=binary' order by score DESC;" | tail -n+3 | head -n-2 | sed -e 's/^ /\./')
+
+# decompile the executables
+
+# use flawfinder to do the source-code static analysis
