@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -u
+set -eu
 
 if [ -e ../../configure.sh ]; then
     source ../../configure.sh
