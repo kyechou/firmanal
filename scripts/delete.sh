@@ -32,7 +32,7 @@ fi
 
 # Check that nothing is mounted:
 echo "In case the filesystem is mounted, umount it now ..."
-sudo ./scripts/umount.sh ${IID}
+sudo ${VM_SCRIPT_DIR}/umount.sh ${IID}
 
 # Check network config
 echo "In case the network is configured, reconfigure it now ..."
@@ -49,16 +49,16 @@ if [ -f "/tmp/qemu.${IID}*" ]; then
    sudo rm /tmp/qemu.${IID}*
 fi
 
-if [ -f ./images/${IID}.tar.gz ]; then
-   sudo rm ./images/${IID}.tar.gz
+if [ -f ${FIRMWARE_DIR}/${IID}.tar.gz ]; then
+   sudo rm ${FIRMWARE_DIR}/${IID}.tar.gz
 fi
 
-if [ -f ./images/${IID}.kernel ]; then
-   sudo rm ./images/${IID}.kernel
+if [ -f ${FIRMWARE_DIR}/${IID}.kernel ]; then
+   sudo rm ${FIRMWARE_DIR}/${IID}.kernel
 fi
 
-if [ -d ./scratch/${IID}/ ]; then
-   sudo rm -r ./scratch/${IID}/
+if [ -d ${VM_DIR}/${IID}/ ]; then
+   sudo rm -r ${VM_DIR}/${IID}/
 fi
 
 echo "Done. Removed project ID ${IID}."
