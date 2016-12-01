@@ -76,7 +76,6 @@ echo "Done!"
 
 QEMUTERMINATETEMPLATE = """#!/bin/bash
 
-set -e
 set -u
 
 ARCHEND=%(ARCHEND)s
