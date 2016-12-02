@@ -34,4 +34,6 @@ tar xf ${FIRMWARE_DIR}/${IID}.tar.gz -C ${OUT_DIR} $(psql -U firmadyne -d firmwa
 find ${OUT_DIR} -type f -executable -exec bash -c 'nocode "$0" > "$0".dec.c; rm "$0"' {} \;
 
 # use flawfinder to do the source-code static analysis
-find ${OUT_DIR} -type f -name '*.dec.c' -exec bash -c 'flawfinder -cCH "$0" > "$0".out; rm "$0"' {} \;
+cd ${OUT_DIR}	# in order not to show the full path in the output results
+find . -type f -name '*.dec.c' -exec bash -c 'flawfinder -cCH "$0" > "$0".out; rm "$0"' {} \;
+cd -
