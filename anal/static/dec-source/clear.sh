@@ -21,13 +21,8 @@ if [[ $# -ne 1 ]]; then
 fi
 
 IID=${1}
-WORK_DIR=${STATIC_DIR}/dec-source
-DEC_DIR=${WORK_DIR}/dec/${IID}
-OUT_DIR=${WORK_DIR}/out/${IID}
+OUT_DIR=${STATIC_DIR}/dec-source/${IID}
 
-if [[ -d ${DEC_DIR} ]]; then
-	rm -rf ${DEC_DIR}
-fi
 if [[ -d ${OUT_DIR} ]]; then
 	rm -rf ${OUT_DIR}
 fi
