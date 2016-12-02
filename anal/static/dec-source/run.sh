@@ -15,30 +15,34 @@ else
 	exit 1
 fi
 
-if [ $# -ne 1 ]; then
+if [[ $# -ne 1 ]]; then
 	echo "Usage: $0 <image ID>"
 	exit 1
 fi
 
 IID=${1}
 WORK_DIR=${STATIC_DIR}/dec-source
-EXTRACT_DIR=${WORK_DIR}/extract/${IID}
 DEC_DIR=${WORK_DIR}/dec/${IID}
-RESULT_DIR=${WORK_DIR}/result/${IID}
+OUT_DIR=${WORK_DIR}/out/${IID}
 
-if [ ! -d ${EXTRACT_DIR} ]; then
-	mkdir -p ${EXTRACT_DIR}
-fi
-if [ ! -d ${DEC_DIR} ]; then
+if [[ ! -d ${DEC_DIR} ]]; then
 	mkdir -p ${DEC_DIR}
 fi
-if [ ! -d ${RESULT_DIR} ]; then
-	mkdir -p ${RESULT_DIR}
+if [[ ! -d ${OUT_DIR} ]]; then
+	mkdir -p ${OUT_DIR}
 fi
 
 # extract the files from the image tarball according to the database information
-tar xf ${FIRMWARE_DIR}/${IID}.tar.gz -C ${EXTRACT_DIR} $(psql -U firmadyne -d firmware -c "select filename from object_to_image where mime='application/x-executable; charset=binary' order by score DESC;" | tail -n+3 | head -n-2 | sed -e 's/^ /\./')
+tar xf ${FIRMWARE_DIR}/${IID}.tar.gz -C ${DEC_DIR} $(psql -U firmadyne -d firmware -c "select filename from object_to_image where mime='application/x-executable; charset=binary' order by score DESC;" | tail -n+3 | head -n-2 | sed -e 's/^ /\./')
 
 # decompile the executables
+decompile () {
+	if [[ -x "$0" ]]; then
+		nocode $0 > $0.dec.c
+		rm $0
+	fi
+}
+export -f decompile
+find ${DEC_DIR} -type f -exec bash -c 'decompile "$0"' {} \;
 
 # use flawfinder to do the source-code static analysis
