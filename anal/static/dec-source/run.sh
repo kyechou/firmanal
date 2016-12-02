@@ -36,13 +36,6 @@ fi
 tar xf ${FIRMWARE_DIR}/${IID}.tar.gz -C ${DEC_DIR} $(psql -U firmadyne -d firmware -c "select filename from object_to_image where mime='application/x-executable; charset=binary' order by score DESC;" | tail -n+3 | head -n-2 | sed -e 's/^ /\./')
 
 # decompile the executables
-decompile () {
-	if [[ -x "$0" ]]; then
-		nocode $0 > $0.dec.c
-		rm $0
-	fi
-}
-export -f decompile
-find ${DEC_DIR} -type f -exec bash -c 'decompile "$0"' {} \;
+find ${DEC_DIR} -type f -executable -exec bash -c 'nocode "$0" > "$0".dec.c' {} \;
 
 # use flawfinder to do the source-code static analysis
