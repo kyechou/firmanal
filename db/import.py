@@ -13,20 +13,14 @@ import shutil
 wanted_mime = ['application/x-executable', 'application/x-object', 'application/x-sharedlib',
                'text/x-php', 'text/x-shellscript']
 
-def evaluate (f):
+def get_priority (f, mime):
     filename = f.name[1:]
     perm = f.mode
-    m = magic.open(magic.MAGIC_MIME)
-    m.load()
-    mime = m.file('/tmp/tar2db_evaluate' + filename)
 
     # calculate the score...
     score = 0
     ## on mime
-    for x in wanted_mime:
-        if x in mime:
-            score += 50
-            break
+    score += mime_exam (mime)
     ## on filename
     if filename.endswith('.a'):
         score += 10
@@ -59,10 +53,9 @@ def getFileHashes(infile):
     for f in t.getmembers():
         if f.isfile():
             mime = get_type (t, f)
-            score = evaluate (f)
             # we use f.name[1:] to get rid of the . at the beginning of the path
             files.append((f.name[1:], hashlib.md5(t.extractfile(f).read()).hexdigest(),
-                          f.uid, f.gid, f.mode, mime, score))
+                          f.uid, f.gid, f.mode, mime, get_priority (f, mime)))
         elif f.issym():
             links.append((f.name[1:], f.linkpath))
     shutil.rmtree ('/tmp/tar2db_evaluate')
