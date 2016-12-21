@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eu
+set -u
 
 if [ -e ../../../configure.sh ]; then
 	. ../../../configure.sh
@@ -28,12 +28,15 @@ if [[ ! -d ${OUT_DIR} ]]; then
 fi
 
 # extract the files from the image tarball according to the database information
+echo "Extracting binaries......"
 tar xf ${FIRMWARE_DIR}/${IID}.tar.gz -C ${OUT_DIR} $(psql -U firmadyne -d firmware -c "select filename from object_to_image where mime='application/x-executable; charset=binary' order by score DESC;" | tail -n+3 | head -n-2 | sed -e 's/^ /\./')
 
 # decompile the executables
+echo "Decompiling binaries......"
 find ${OUT_DIR} -type f -executable -exec bash -c 'nocode "$0" > "$0".dec.c; rm "$0"' {} \;
 
 # use flawfinder to do the source-code static analysis
+echo "Static analysis using flawfinder......"
 cd ${OUT_DIR}	# in order not to show the full path in the output results
-find . -type f -name '*.dec.c' -exec bash -c 'flawfinder -cCH "$0" > "$0".out; rm "$0"' {} \;
+find . -type f -name '*.dec.c' -exec bash -c 'flawfinder -cC "$0" > "$0".out; rm "$0"' {} \;
 cd -
