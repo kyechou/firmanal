@@ -19,22 +19,42 @@ def get_priority (f, mime):
 
     # calculate the score...
     score = 0
-    ## on mime
     score += mime_exam (mime)
-    ## on filename
+    score += filename_exam (filename)
+    score += permission_exam (perm)
+
+    return score
+
+def mime_exam (mime):
+    for x in wanted_mime:
+        if x in mime:
+            return 50
+    return 0
+
+def filename_exam (filename):
+    score = 0
+
     if filename.endswith('.a'):
         score += 10
     elif filename.endswith('.js'):
         score += 50
+
     if filename.startswith('/home/'):
         score += 10
-    elif filename.startswith('/lib/') or filename.startswith('/usr/bin/') or filename.startswith('/usr/local/bin/'):
+    elif filename.startswith('/lib/'):
         score += 20
-    ## on permissions (0111)
-    if perm & 73:
-        score += 10;
+    elif filename.startswith('/usr/bin/'):
+        score += 20
+    elif filename.startswith('/usr/local/bin/'):
+        score += 20
 
     return score
+
+def permission_exam (perm):
+    if perm & 73:   # 0111
+        return 10
+    else:
+        return 0
 
 def get_type (t, f):
     path = '/tmp/tar2db_evaluate'
