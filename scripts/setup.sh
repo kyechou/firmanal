@@ -69,8 +69,8 @@ cd .. && rm -rf stuffit
 
 ## snowman (decompiler)
 sudo pacman -S --noconfirm --needed gcc cmake boost qt5-base
-wget https://github.com/yegord/snowman/archive/v0.1.0.tar.gz -O - | tar zx
-cd snowman-0.1.0 && mkdir build && cd build
+git clone https://github.com/nihilus/snowman.git && cd snowman
+mkdir build && cd build
 BOOST_ROOT=/usr/include/boost
 mkdir qt
 ln -s /usr/include/qt qt/include
@@ -81,6 +81,6 @@ cmake --build .
 sudo cmake --build . --target install
 unlink ${QTDIR}/include
 unlink ${QTDIR}/lib
-cd ../.. && rm -rf snowman-0.1.0
+cd ../.. && rm -rf snowman
 
 echo "Finish setup!"
