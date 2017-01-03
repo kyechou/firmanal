@@ -82,4 +82,17 @@ unlink ${QTDIR}/include
 unlink ${QTDIR}/lib
 cd ../.. && rm -rf snowman
 
+## Metasploit Framework
+sudo pacman -S --needed --noconfirm metasploit
+export PATH="$PATH:$(ruby -e 'print Gem.user_dir')/bin"
+sudo chown -R ${USER} /opt/metasploit
+cd /opt/metasploit
+gem install bundler
+bundler install
+cd -
+sudo -u postgres createuser metasploit -s
+sudo -u postgres createdb -O metasploit -U metasploit msf
+msfconsole --quiet -x "db_connect metasploit@msf" -x "db_rebuild_cache" -x "exit"
+
+
 echo "Finish setup!"
