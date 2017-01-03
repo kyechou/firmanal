@@ -38,10 +38,7 @@ kpartx -a -v "${IMAGE}"
 sleep 1
 
 echo "----Making image directory----"
-if [ ! -e "${IMAGE_DIR}" ]
-then
-        mkdir "${IMAGE_DIR}"
-fi
+[[ ! -e "${IMAGE_DIR}" ]] && mkdir "${IMAGE_DIR}"
 
 echo "----Mounting----"
 #sudo /bin/mount /dev/nbd0p1 "${IMAGE_DIR}"
