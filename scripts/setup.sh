@@ -23,8 +23,7 @@ sudo passwd postgres
 sudo -u postgres initdb --locale $LANG -E UTF-8 -D '/var/lib/postgres/data'
 sudo systemctl enable postgresql.service
 sudo systemctl start postgresql.service
-echo "Setting the password for database user 'firmadyne'..."
-sudo -u postgres createuser -P firmadyne -s
+sudo -u postgres createuser firmadyne -s
 sudo -u postgres createdb -O firmadyne -U firmadyne firmware
 sudo -u postgres psql -d firmware < ${DB_DIR}/schema
 
