@@ -92,6 +92,6 @@ bundler install
 cd -
 sudo -u postgres createuser metasploit -s
 sudo -u postgres createdb -O metasploit -U metasploit msf
-msfconsole --quiet -x "db_connect metasploit@msf" -x "db_rebuild_cache" -x "exit"
+msfconsole -qx "db_connect metasploit@msf; db_rebuild_cache; exit"
 
 echo "Finish setup!"
