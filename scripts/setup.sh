@@ -92,15 +92,16 @@ bundler install
 cd -
 sudo -u postgres createuser metasploit -s
 sudo -u postgres createdb -O metasploit -U metasploit msf
+[[ ! -d ${HOME}/.msf4 ]] && mkdir -p ${HOME}/.msf4
 echo "production:
-	adapter: postgresql
-	database: msf
-	username: metasploit
-	password:
-	host: localhost
-	port: 5432
-	pool: 5
-	timeout: 5" > ${HOME}/.msf4/database.yml
+ adapter: postgresql
+ database: msf
+ username: metasploit
+ password:
+ host: localhost
+ port: 5432
+ pool: 5
+ timeout: 5" > ${HOME}/.msf4/database.yml
 msfconsole -qx "db_rebuild_cache; exit"
 
 echo "Finish setup!"
