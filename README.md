@@ -51,7 +51,7 @@ You may, if you want, compile those binaries by yourself using the `./scripts/co
 8. The system should be available over the network, and is ready for analysis. Kernel messages are logged to `./qemu/vm/1/qemu.final.serial.log`.
    * `./anal/dynamic/snmpwalk.sh 192.168.0.100`
    * `./anal/dynamic/webAccess.py 1 192.168.0.100 log.txt`
-   * `mkdir exploits && ./anal/dynamic/runExploits.py -t 192.168.0.100 -o exploits/exploit -e x` (requires Metasploit Framework)
+   * `mkdir exploits && ./anal/metasploit/runExploits.py -t 192.168.0.100 -o exploits -e all` (requires Metasploit Framework)
    * `sudo nmap -O -sV 192.168.0.100`
 9. To access a console in the firmware, use a presupplied debug run script to access the default console (no network access), modify the network-enabled `run.sh` script to provide console access, or use the second console provided by the framework.
    * `./qemu/scripts/run-debug.sh 1`
