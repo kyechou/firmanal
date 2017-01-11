@@ -90,6 +90,7 @@ sudo pacman -S --needed --noconfirm metasploit
 export PATH="$PATH:$(ruby -e 'print Gem.user_dir')/bin"
 sudo chown -R ${USER} /opt/metasploit
 cd /opt/metasploit
+sudo gem update --system
 gem install bundler
 bundler install
 cd -
