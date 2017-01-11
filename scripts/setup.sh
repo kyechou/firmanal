@@ -85,6 +85,7 @@ cd ../.. && rm -rf snowman
 ## Metasploit Framework
 wget https://archive.archlinux.org/packages/r/ruby/ruby-2.3.3-2-x86_64.pkg.tar.xz
 sudo pacman -U --noconfirm ruby-2.3.3-2-x86_64.pkg.tar.xz
+rm ruby-2.3.3-2-x86_64.pkg.tar.xz
 sudo pacman -S --needed --noconfirm metasploit
 export PATH="$PATH:$(ruby -e 'print Gem.user_dir')/bin"
 sudo chown -R ${USER} /opt/metasploit
