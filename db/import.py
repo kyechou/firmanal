@@ -34,6 +34,9 @@ def mime_exam (mime):
 def filename_exam (filename):
     score = 0
 
+    if filename == '/bin/busybox':
+        return -60;
+
     if filename.endswith('.a'):
         score += 10
     elif filename.endswith('.js'):
