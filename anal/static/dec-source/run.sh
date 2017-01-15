@@ -29,7 +29,7 @@ fi
 
 # extract the files from the image tarball according to the database information
 echo "Extracting binaries......"
-tar xf ${FIRMWARE_DIR}/${IID}.tar.gz -C ${OUT_DIR} $(psql -U firmadyne -d firmware -c "select filename from object_to_image where mime='application/x-executable; charset=binary' order by score DESC;" | tail -n+3 | head -n-2 | sed -e 's/^ /\./')
+tar xf ${FIRMWARE_DIR}/${IID}.tar.gz -C ${OUT_DIR} $(psql -U firmadyne -d firmware -c "select filename from object_to_image where iid=${IID} and mime='application/x-executable; charset=binary' order by score DESC;" | tail -n+3 | head -n-2 | sed -e 's/^ /\./')
 
 # decompile the executables
 echo "Decompiling binaries......"
