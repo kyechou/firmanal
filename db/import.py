@@ -20,8 +20,8 @@ def get_priority (f, mime):
     # calculate the score...
     score = 0
     score += mime_exam (mime)
-    score += filename_exam (filename)
     score += permission_exam (perm)
+    score += filename_exam (filename)
 
     return score
 
