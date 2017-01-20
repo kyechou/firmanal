@@ -14,6 +14,11 @@ else
     exit 1
 fi
 
+if [[ $# -lt 1 ]]; then
+    echo "Usage: inferNetwork.sh <image ID> [<architecture>]"
+    exit 1
+fi
+
 if check_number $1; then
     echo "Usage: inferNetwork.sh <image ID> [<architecture>]"
     exit 1

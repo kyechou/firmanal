@@ -14,6 +14,11 @@ else
     exit 1
 fi
 
+if [[ $# -ne 1 ]]; then
+    echo "Usage: mount.sh <image ID>"
+    exit 1
+fi
+
 if check_number $1; then
     echo "Usage: mount.sh <image ID>"
     exit 1
