@@ -108,4 +108,7 @@ echo "production:
  timeout: 5" > ${HOME}/.msf4/database.yml
 msfconsole -qx "db_rebuild_cache; exit"
 
+## AFL
+sudo pacman -U --needed --noconfirm afl/afl-2.39b-1-x86_64.pkg.tar.xz
+
 echo "Finish setup!"
