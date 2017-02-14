@@ -15,16 +15,19 @@ resolve_link() {
 # make /etc and add some essential files
 mkdir -p $(resolve_link /etc)
 if [ ! -s /etc/TZ ]; then
+    [ -L /etc/TZ ] && unlink /etc/TZ
     echo "Creating /etc/TZ!"
     echo "EST5EDT" > /etc/TZ
 fi
 
 if [ ! -s /etc/hosts ]; then
+    [ -L /etc/hosts ] && unlink /etc/hosts
     echo "Creating /etc/hosts!"
     echo "127.0.0.1 localhost" > /etc/hosts
 fi
 
 if [ ! -s /etc/passwd ]; then
+    [ -L /etc/passwd ] && unlink /etc/passwd
     echo "Creating /etc/passwd!"
     echo "root::0:0:root:/root:/bin/sh" > /etc/passwd
 fi
