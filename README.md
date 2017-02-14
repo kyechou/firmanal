@@ -1,21 +1,17 @@
 # Table of Contents
 
 - [Introduction](#introduction)
-  - [Analyses](#analyses)
 - [Setup](#setup)
   - [Binaries](#binaries)
 - [Usage](#usage)
 - [Database](#database-1)
   - [Schema](#schema)
+- [Analyses](#analyses)
 
 # Introduction
 
 Firmanal is an automated firmware analysis tool based on [Firmadyne](https://github.com/firmadyne/firmadyne),
 and it currently only works on Arch Linux.
-
-## Analyses
-
-(TODO)
 
 # Setup
 
@@ -46,20 +42,17 @@ You may, if you want, compile those binaries by yourself using the `./scripts/co
 6. Infer the network configuration for firmware `1`. Kernel messages are logged to `./qemu/vm/1/qemu.initial.serial.log`.
    * `./qemu/scripts/inferNetwork.sh 1`
 7. Emulate firmware `1` with the inferred network configuration. This will modify the configuration of the host system by creating a TAP device and adding a route.
-   * `sudo ./qemu/vm/1/run.sh`
-   * `sudo ./qemu/vm/1/terminate.sh`
+   Use `Ctrl-a + x` to terminate the guest.
+   * `./qemu/vm/1/run.sh`
 8. The system should be available over the network, and is ready for analysis. Kernel messages are logged to `./qemu/vm/1/qemu.final.serial.log`.
    * `./anal/dynamic/snmpwalk.sh 192.168.0.100`
    * `./anal/dynamic/webAccess.py 1 192.168.0.100 log.txt`
    * `mkdir exploits && ./anal/metasploit/runExploits.py -t 192.168.0.100 -o exploits -e all` (requires Metasploit Framework)
    * `sudo nmap -O -sV 192.168.0.100`
-9. To access a console in the firmware, use a presupplied debug run script to access the default console (no network access), modify the network-enabled `run.sh` script to provide console access, or use the second console provided by the framework.
-   * `./qemu/scripts/run-debug.sh 1`
-   * `nc -U /tmp/qemu.1.S1`
-10. The following scripts can be used to mount/unmount the filesystem of firmware `1`. Ensure that the emulated firmware is not running, and remember to unmount before performing any other operations.
+9. The following scripts can be used to mount/unmount the filesystem of firmware `1`. Ensure that the emulated firmware is not running, and remember to unmount before performing any other operations.
    * `sudo ./qemu/scripts/mount.sh 1`
    * `sudo ./qemu/scripts/umount.sh 1`
-11. To delete the firmware, use the `delete.sh`.
+10. To delete the firmware, use the `delete.sh`.
    * `./scripts/delete.sh 1`
 
 # Database
@@ -129,4 +122,8 @@ Below are descriptions of tables in the schema.
 | version      | Version string                 |
 | build        | Build string                   |
 | date         | Release date                   |
+
+# Analyses
+
+(TODO)
 
