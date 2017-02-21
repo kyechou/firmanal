@@ -146,10 +146,10 @@ def process(iid, infile):
     dbh.close()
 
 def getarch (infile):
-    if os.path.isfile('./getArch.sh'):
-        os.system ('./getArch.sh {0}'.format(infile))
-    elif os.path.isfile('./db/getArch.sh'):
-        os.system ('./db/getArch.sh {0}'.format(infile))
+    if os.path.isfile('../scripts/getArch.sh'):
+        os.system ('../scripts/getArch.sh {0}'.format(infile))
+    elif os.path.isfile('./scripts/getArch.sh'):
+        os.system ('./scripts/getArch.sh {0}'.format(infile))
     else:
         print ('cannot find getArch.sh')
         sys.exit (1)
