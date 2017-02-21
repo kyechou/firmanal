@@ -20,8 +20,8 @@ if [[ $# -ne 1 ]]; then
 	exit 1
 fi
 
-export IID=${1}
-export OUT_DIR=${STATIC_DIR}/dec-source/${IID}
+IID=${1}
+OUT_DIR=${STATIC_DIR}/dec-source/${IID}
 
 if [[ ! -d ${OUT_DIR} ]]; then
 	mkdir -p ${OUT_DIR}
