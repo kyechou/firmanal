@@ -1,0 +1,48 @@
+# $Id: PKGBUILD 280649 2016-11-14 07:39:56Z bpiotrowski $
+# Maintainer: Tom Gundersen <teg@jklm.no>
+# Contributor: Andrea Scarpino <andrea@archlinux.org>
+# Contributor: Geoffroy Carrier <geoffroy@archlinux.org>
+
+pkgbase=bluez
+pkgname=('bluez-libs')
+pkgver=5.43
+pkgrel=2
+url="http://www.bluez.org/"
+arch=('i686' 'x86_64')
+license=('GPL2')
+makedepends=('dbus' 'libical' 'systemd')
+source=(http://www.kernel.org/pub/linux/bluetooth/${pkgbase}-${pkgver}.tar.xz)
+# see https://www.kernel.org/pub/linux/bluetooth/sha256sums.asc
+sha256sums=('16c9c05d2a1da644ce3570d975ada3643d2e60c007a955bac09c0a0efeb58d15')
+
+build() {
+  cd ${pkgbase}-${pkgver}
+  ./configure \
+          --prefix=/usr \
+          --mandir=/usr/share/man \
+          --sysconfdir=/etc \
+          --localstatedir=/var \
+          --libexecdir=/usr/lib \
+          --enable-sixaxis \
+          --enable-static \
+          --enable-experimental \
+          --enable-library # this is deprecated
+  make
+}
+
+check() {
+  cd $pkgbase-$pkgver
+  make check
+}
+
+package_bluez-libs() {
+  pkgdesc="Deprecated libraries for the bluetooth protocol stack"
+  depends=('glibc')
+  license=('LGPL2.1')
+
+  cd ${pkgbase}-${pkgver}
+  make DESTDIR=${pkgdir} \
+       install-includeHEADERS \
+       install-libLTLIBRARIES \
+       install-pkgconfigDATA
+}
