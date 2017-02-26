@@ -1,0 +1,34 @@
+# $Id: PKGBUILD 285320 2017-01-06 03:43:12Z allan $
+# Maintainer: Allan McRae <allan@archlinux.org>
+# Contributer: Jan de Groot <jgc@archlinux.org>
+
+pkgname=gmp
+pkgver=6.1.2
+pkgrel=1
+pkgdesc="A free library for arbitrary precision arithmetic"
+arch=('i686' 'x86_64')
+url="http://gmplib.org/"
+depends=('gcc-libs' 'sh')
+license=('LGPL3' 'GPL')
+source=(https://gmplib.org/download/gmp/gmp-${pkgver}.tar.xz)
+md5sums=('f58fa8001d60c4c77595fbbb62b63c1d')
+
+build() {
+  cd "${pkgname}-${pkgver}"
+
+  ./configure --build=${CHOST} \
+    --prefix=/usr \
+    --enable-cxx \
+    --enable-fat
+  make
+}
+
+check() {
+  cd "${pkgname}-${pkgver}"
+  make check
+}
+
+package() {
+  cd "${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+}
