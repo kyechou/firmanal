@@ -1,0 +1,56 @@
+# $Id: PKGBUILD 282885 2016-12-06 17:11:21Z anthraxx $
+# Maintainer:
+
+pkgname=krb5-static
+pkgver=1.13.7
+pkgrel=1
+pkgdesc="The Kerberos network authentication system"
+arch=('i686' 'x86_64')
+url='https://web.mit.edu/kerberos/'
+license=('custom')
+depends=('e2fsprogs' 'libldap' 'keyutils' 'krb5')
+makedepends=('perl')
+backup=('etc/krb5.conf' 'var/lib/krb5kdc/kdc.conf')
+options=('!emptydirs')
+source=(${pkgname}-${pkgver}.tar.gz::https://web.mit.edu/kerberos/dist/krb5/${pkgver%.*}/krb5-${pkgver}.tar.gz
+        krb5-config_LDFLAGS.patch)
+sha1sums=('c1fc6840633fffc846c3b1f96dc56a82bbb66810'
+          'f125824ed37f31e6fd2fdb6a437be8ff1c3700ab')
+
+prepare() {
+  tar -xf ${pkgname}-${pkgver}.tar.gz
+  cd krb5-${pkgver}
+  # cf https://bugs.gentoo.org/show_bug.cgi?id=448778
+  patch -p1 -i "${srcdir}"/krb5-config_LDFLAGS.patch
+
+  # FS#25384
+  sed -i "/KRB5ROOT=/s/\/local//" src/util/ac_check_krb5.m4
+}
+
+build() {
+   cd krb5-${pkgver}/src
+   export CFLAGS+=" -O3 -fPIC -fno-strict-aliasing -fstack-protector-all"
+   export CPPFLAGS+=" -I/usr/include/et"
+   ./configure --prefix=/usr \
+               --sbindir=/usr/bin \
+               --sysconfdir=/etc \
+               --localstatedir=/var/lib \
+               --enable-static \
+               --disable-shared \
+               --with-system-et \
+               --with-system-ss \
+               --disable-rpath \
+               --without-tcl \
+               --enable-dns-for-realm \
+               --with-ldap \
+               --without-system-verto
+   sed -i -e 's/-lverto/-lverto -lm/' Makefile */Makefile */*/Makefile */*/*/Makefile */*/*/*/Makefile */*/*/*/*/Makefile */*/*/*/*/*/Makefile
+   make
+}
+
+package() {
+   cd krb5-${pkgver}/src
+   make DESTDIR="${pkgdir}" EXAMPLEDIR=/usr/share/doc/${pkgname}/examples install
+   cd ${pkgdir}
+   rm -rf usr/bin usr/include usr/share usr/lib/pkgconfig
+}
