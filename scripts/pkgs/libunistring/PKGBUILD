@@ -1,0 +1,31 @@
+# $Id: PKGBUILD 283846 2016-12-16 14:05:48Z bpiotrowski $
+# Maintainer:  Bartłomiej Piotrowski <bpiotrowski@archlinux.org>
+# Contributor: Jan de Groot <jgc@archlinux.org>
+# Contributor: Sergej Pupykin <pupykin.s+arch@gmail.com>
+# Contributor: Emmanuel 'guinness' Boudreault
+# Contributor: Patrick McCarty <pnorcks at gmail dot com>
+
+pkgname=libunistring
+pkgver=0.9.7
+pkgrel=1
+pkgdesc='Library for manipulating Unicode strings and C strings'
+url='http://www.gnu.org/software/libunistring/'
+arch=('i686' 'x86_64')
+license=('GPL')
+depends=('glibc')
+source=(https://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.xz)
+md5sums=('82e0545363d111bfdfec2ddbfe62ffd3')
+
+build() {
+  cd $pkgname-$pkgver
+  ./configure --prefix=/usr
+  make
+}
+
+check() {
+  make -C $pkgname-$pkgver check
+}
+
+package() {
+  make -C $pkgname-$pkgver DESTDIR="$pkgdir" install
+}
