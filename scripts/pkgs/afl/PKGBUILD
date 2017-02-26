@@ -21,7 +21,7 @@ source=(${pkgname}-${pkgver}.tgz::http://lcamtuf.coredump.cx/${pkgname}/releases
         ${pkgname}-${pkgver}.diff)
 sha512sums=('0df37fc8dea65d4130bc0fc8aaa23525bde4832c7202efb78ebe740d661546adee575b48fb94d851ef26293ca28a6ff818ab1dfd643c8e688aceb520e11229d0'
             '2ff7222ef250e4804f466f95952b6e5951c5e801d37fe9a126c00254f1837e199d9c30e5610ef5fb7b379a1e354b812a656d76d51b0f7a182960c5fafbfe7ac9'
-            '8e77a2eddea51a2338761ce56e2a2c10646ea201730358216933fcada72e401fe1733283030a8ce21c00567a179ff1eb6d11d3e1420503fbf6a5441b8339d2f3')
+            'acaaf4f2d6f2eeee7dd0f53040cd54ac285e0c4472a860b991c6183ea8d2dbb5a79ecf95b132baa5ccc469c879fec00f035c73aeb5bd16ad135330cd6399b78a')
 
 prepare() {
   rm -f $(readlink ${pkgname}-${pkgver}.tgz)
@@ -31,11 +31,10 @@ prepare() {
 
 build() {
   cd ${pkgname}-${pkgver}
-  export CC=clang
-  export CXX=clang++
+  export CC=gcc
+  export CXX=g++
   export AFL_NO_X86=1
   make PREFIX=/usr
-  make -C llvm_mode PREFIX=/usr
   cd qemu_mode
   ./build_qemu_support.sh
   cd ..

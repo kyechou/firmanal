@@ -1,6 +1,6 @@
 diff -aur afl-2.39b.orig/afl-fuzz.c afl-2.39b/afl-fuzz.c
 --- afl-2.39b.orig/afl-fuzz.c	2016-11-27 10:10:23.000000000 +0800
-+++ afl-2.39b/afl-fuzz.c	2017-02-25 04:10:25.113333333 +0800
++++ afl-2.39b/afl-fuzz.c	2017-02-26 11:08:25.337239954 +0800
 @@ -89,7 +89,8 @@
            *in_bitmap,                 /* Input bitmap                     */
            *doc_path,                  /* Path to documentation dir        */
@@ -63,7 +63,16 @@ diff -aur afl-2.39b.orig/afl-fuzz.c afl-2.39b/afl-fuzz.c
    setup_signal_handlers();
 diff -aur afl-2.39b.orig/Makefile afl-2.39b/Makefile
 --- afl-2.39b.orig/Makefile	2017-01-15 09:50:54.000000000 +0800
-+++ afl-2.39b/Makefile	2017-02-25 02:56:41.573333333 +0800
++++ afl-2.39b/Makefile	2017-02-26 11:08:25.337239954 +0800
+@@ -28,7 +28,7 @@
+ SH_PROGS    = afl-plot afl-cmin afl-whatsup
+ 
+ CFLAGS     ?= -O3 -funroll-loops
+-CFLAGS     += -Wall -D_FORTIFY_SOURCE=2 -g -Wno-pointer-sign \
++CFLAGS     += -Wall -D_FORTIFY_SOURCE=2 -O3 -static -fPIC -Wno-pointer-sign \
+ 	      -DAFL_PATH=\"$(HELPER_PATH)\" -DDOC_PATH=\"$(DOC_PATH)\" \
+ 	      -DBIN_PATH=\"$(BIN_PATH)\"
+ 
 @@ -122,7 +122,7 @@
  	rm -f $${DESTDIR}$(BIN_PATH)/afl-plot.sh
  	install -m 755 $(PROGS) $(SH_PROGS) $${DESTDIR}$(BIN_PATH)
@@ -75,7 +84,7 @@ diff -aur afl-2.39b.orig/Makefile afl-2.39b/Makefile
  else
 diff -aur afl-2.39b.orig/qemu_mode/build_qemu_support.sh afl-2.39b/qemu_mode/build_qemu_support.sh
 --- afl-2.39b.orig/qemu_mode/build_qemu_support.sh	2016-03-08 15:10:20.000000000 +0800
-+++ afl-2.39b/qemu_mode/build_qemu_support.sh	2017-02-25 02:56:41.573333333 +0800
++++ afl-2.39b/qemu_mode/build_qemu_support.sh	2017-02-26 11:17:28.706037539 +0800
 @@ -1,4 +1,4 @@
 -#!/bin/sh
 +#!/bin/bash
@@ -107,14 +116,13 @@ diff -aur afl-2.39b.orig/qemu_mode/build_qemu_support.sh afl-2.39b/qemu_mode/bui
    rm -f "$ARCHIVE"
    wget -O "$ARCHIVE" -- "$QEMU_URL" || exit 1
  
-@@ -110,36 +105,31 @@
+@@ -110,36 +105,33 @@
  
  echo "[*] Uncompressing archive (this will take a while)..."
  
 -rm -rf "qemu-2.3.0" || exit 1
--tar xf "$ARCHIVE" || exit 1
 +rm -rf "qemu-2.8.0" || exit 1
-+tar Jxf "$ARCHIVE" || exit 1
+ tar xf "$ARCHIVE" || exit 1
  
  echo "[+] Unpacking successful."
  
@@ -138,13 +146,16 @@ diff -aur afl-2.39b.orig/qemu_mode/build_qemu_support.sh afl-2.39b/qemu_mode/bui
 +cd qemu-2.8.0 || exit 1
  
 -cd qemu-2.3.0 || exit 1
-+CC=gcc
-+CXX=g++
- 
+-
 -CFLAGS="-O3" ./configure --disable-system --enable-linux-user \
 -  --enable-guest-base --disable-gtk --disable-sdl --disable-vnc \
 -  --target-list="${CPU_TARGET}-linux-user" || exit 1
-+CFLAGS="-O3" ./configure --python=/usr/bin/python2 --disable-system \
++export CC=gcc
++export CXX=g++
++export CFLAGS="-O3 -static -fPIC"
++export LDFLAGS="-L/usr/lib"
++
++./configure --python=/usr/bin/python2 --static --disable-system \
 +  --enable-linux-user --disable-gtk --disable-sdl --disable-vnc \
 +  --target-list="aarch64-linux-user alpha-linux-user armeb-linux-user arm-linux-user cris-linux-user i386-linux-user m68k-linux-user microblazeel-linux-user microblaze-linux-user mips64el-linux-user mips64-linux-user mipsel-linux-user mips-linux-user mipsn32el-linux-user mipsn32-linux-user or32-linux-user ppc64abi32-linux-user ppc64le-linux-user ppc64-linux-user ppc-linux-user s390x-linux-user sh4eb-linux-user sh4-linux-user sparc32plus-linux-user sparc64-linux-user sparc-linux-user tilegx-linux-user x86_64-linux-user" || exit 1
  
@@ -155,7 +166,7 @@ diff -aur afl-2.39b.orig/qemu_mode/build_qemu_support.sh afl-2.39b/qemu_mode/bui
  
  make || exit 1
  
-@@ -147,50 +137,47 @@
+@@ -147,50 +139,47 @@
  
  echo "[*] Copying binary..."
  
@@ -181,45 +192,45 @@ diff -aur afl-2.39b.orig/qemu_mode/build_qemu_support.sh afl-2.39b/qemu_mode/bui
 -  cd ..
 -
 -  make >/dev/null || exit 1
--
--  gcc test-instr.c -o test-instr || exit 1
 +echo "[*] Testing the build..."
  
+-  gcc test-instr.c -o test-instr || exit 1
+-
 -  unset AFL_INST_RATIO
-+cd ..
- 
+-
 -  echo 0 | ./afl-showmap -m none -Q -q -o .test-instr0 ./test-instr || exit 1
 -  echo 1 | ./afl-showmap -m none -Q -q -o .test-instr1 ./test-instr || exit 1
-+make >/dev/null || exit 1
++cd ..
  
 -  rm -f test-instr
-+gcc test-instr.c -o test-instr || exit 1
++make >/dev/null || exit 1
  
 -  cmp -s .test-instr0 .test-instr1
 -  DR="$?"
-+unset AFL_INST_RATIO
++gcc test-instr.c -o test-instr || exit 1
  
 -  rm -f .test-instr0 .test-instr1
++unset AFL_INST_RATIO
+ 
+-  if [ "$DR" = "0" ]; then
 +echo 0 | ./afl-showmap -m none -Q -q -o .test-instr0 ./test-instr || exit 1
 +echo 1 | ./afl-showmap -m none -Q -q -o .test-instr1 ./test-instr || exit 1
  
--  if [ "$DR" = "0" ]; then
-+rm -f test-instr
- 
 -    echo "[-] Error: afl-qemu-trace instrumentation doesn't seem to work!"
 -    exit 1
++rm -f test-instr
+ 
+-  fi
 +cmp -s .test-instr0 .test-instr1
 +DR="$?"
  
--  fi
-+rm -f .test-instr0 .test-instr1
- 
 -  echo "[+] Instrumentation tests passed. "
 -  echo "[+] All set, you can now use the -Q mode in afl-fuzz!"
-+if [ "$DR" = "0" ]; then
++rm -f .test-instr0 .test-instr1
  
 -else
--
++if [ "$DR" = "0" ]; then
+ 
 -  echo "[!] Note: can't test instrumentation when CPU_TARGET set."
 -  echo "[+] All set, you can now (hopefully) use the -Q mode in afl-fuzz!"
 +  echo "[-] Error: afl-qemu-trace instrumentation doesn't seem to work!"
@@ -233,7 +244,7 @@ diff -aur afl-2.39b.orig/qemu_mode/build_qemu_support.sh afl-2.39b/qemu_mode/bui
  exit 0
 diff -aur afl-2.39b.orig/qemu_mode/patches/afl-qemu-cpu-inl.h afl-2.39b/qemu_mode/patches/afl-qemu-cpu-inl.h
 --- afl-2.39b.orig/qemu_mode/patches/afl-qemu-cpu-inl.h	2016-02-21 06:22:07.000000000 +0800
-+++ afl-2.39b/qemu_mode/patches/afl-qemu-cpu-inl.h	2017-02-25 02:56:41.573333333 +0800
++++ afl-2.39b/qemu_mode/patches/afl-qemu-cpu-inl.h	2017-02-26 11:08:25.337239954 +0800
 @@ -49,7 +49,7 @@
  #define AFL_QEMU_CPU_SNIPPET2 do { \
      if(tb->pc == afl_entry_point) { \
@@ -293,7 +304,7 @@ diff -aur afl-2.39b.orig/qemu_mode/patches/afl-qemu-cpu-inl.h afl-2.39b/qemu_mod
  
 diff -aur afl-2.39b.orig/types.h afl-2.39b/types.h
 --- afl-2.39b.orig/types.h	2016-08-03 02:35:04.000000000 +0800
-+++ afl-2.39b/types.h	2017-02-25 02:56:41.573333333 +0800
++++ afl-2.39b/types.h	2017-02-26 11:08:25.340573148 +0800
 @@ -76,7 +76,9 @@
  #define MEM_BARRIER() \
    asm volatile("" ::: "memory")
