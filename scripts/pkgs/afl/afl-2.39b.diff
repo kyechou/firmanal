@@ -157,7 +157,7 @@ diff -aur afl-2.39b.orig/qemu_mode/build_qemu_support.sh afl-2.39b/qemu_mode/bui
 +
 +./configure --python=/usr/bin/python2 --static --disable-system \
 +  --enable-linux-user --disable-gtk --disable-sdl --disable-vnc \
-+  --target-list="aarch64-linux-user alpha-linux-user armeb-linux-user arm-linux-user cris-linux-user i386-linux-user m68k-linux-user microblazeel-linux-user microblaze-linux-user mips64el-linux-user mips64-linux-user mipsel-linux-user mips-linux-user mipsn32el-linux-user mipsn32-linux-user or32-linux-user ppc64abi32-linux-user ppc64le-linux-user ppc64-linux-user ppc-linux-user s390x-linux-user sh4eb-linux-user sh4-linux-user sparc32plus-linux-user sparc64-linux-user sparc-linux-user tilegx-linux-user x86_64-linux-user" || exit 1
++  --target-list="aarch64-linux-user armeb-linux-user arm-linux-user i386-linux-user mips64el-linux-user mips64-linux-user mipsel-linux-user mips-linux-user mipsn32el-linux-user mipsn32-linux-user ppc64abi32-linux-user ppc64le-linux-user ppc64-linux-user ppc-linux-user x86_64-linux-user" || exit 1
  
  echo "[+] Configuration complete."
  
@@ -171,7 +171,7 @@ diff -aur afl-2.39b.orig/qemu_mode/build_qemu_support.sh afl-2.39b/qemu_mode/bui
  echo "[*] Copying binary..."
  
 -cp -f "${CPU_TARGET}-linux-user/qemu-${CPU_TARGET}" "../../afl-qemu-trace" || exit 1
-+for CPU_TARGET in "aarch64" "alpha" "armeb" "arm" "cris" "i386" "m68k" "microblazeel" "microblaze" "mips64el" "mips64" "mipsel" "mips" "mipsn32el" "mipsn32" "or32" "ppc64abi32" "ppc64le" "ppc64" "ppc" "s390x" "sh4eb" "sh4" "sparc32plus" "sparc64" "sparc" "tilegx" "x86_64"
++for CPU_TARGET in "aarch64" "armeb" "arm" "i386" "mips64el" "mips64" "mipsel" "mips" "mipsn32el" "mipsn32" "ppc64abi32" "ppc64le" "ppc64" "ppc" "x86_64"
 +do
 +  mkdir "../../afl-qemu-trace-${CPU_TARGET}"
 +  cp -f "${CPU_TARGET}-linux-user/qemu-${CPU_TARGET}" "../../afl-qemu-trace-${CPU_TARGET}/afl-qemu-trace" || exit 1
