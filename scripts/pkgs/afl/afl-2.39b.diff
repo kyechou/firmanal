@@ -1,6 +1,6 @@
 diff -aur afl-2.39b.orig/afl-fuzz.c afl-2.39b/afl-fuzz.c
 --- afl-2.39b.orig/afl-fuzz.c	2016-11-27 10:10:23.000000000 +0800
-+++ afl-2.39b/afl-fuzz.c	2017-02-26 11:08:25.337239954 +0800
++++ afl-2.39b/afl-fuzz.c	2017-02-27 09:45:52.160638265 +0800
 @@ -89,7 +89,8 @@
            *in_bitmap,                 /* Input bitmap                     */
            *doc_path,                  /* Path to documentation dir        */
@@ -63,7 +63,7 @@ diff -aur afl-2.39b.orig/afl-fuzz.c afl-2.39b/afl-fuzz.c
    setup_signal_handlers();
 diff -aur afl-2.39b.orig/Makefile afl-2.39b/Makefile
 --- afl-2.39b.orig/Makefile	2017-01-15 09:50:54.000000000 +0800
-+++ afl-2.39b/Makefile	2017-02-26 11:08:25.337239954 +0800
++++ afl-2.39b/Makefile	2017-02-27 09:45:52.160638265 +0800
 @@ -28,7 +28,7 @@
  SH_PROGS    = afl-plot afl-cmin afl-whatsup
  
@@ -84,7 +84,7 @@ diff -aur afl-2.39b.orig/Makefile afl-2.39b/Makefile
  else
 diff -aur afl-2.39b.orig/qemu_mode/build_qemu_support.sh afl-2.39b/qemu_mode/build_qemu_support.sh
 --- afl-2.39b.orig/qemu_mode/build_qemu_support.sh	2016-03-08 15:10:20.000000000 +0800
-+++ afl-2.39b/qemu_mode/build_qemu_support.sh	2017-02-26 11:17:28.706037539 +0800
++++ afl-2.39b/qemu_mode/build_qemu_support.sh	2017-02-27 09:47:35.966101216 +0800
 @@ -1,4 +1,4 @@
 -#!/bin/sh
 +#!/bin/bash
@@ -166,7 +166,7 @@ diff -aur afl-2.39b.orig/qemu_mode/build_qemu_support.sh afl-2.39b/qemu_mode/bui
  
  make || exit 1
  
-@@ -147,50 +139,47 @@
+@@ -147,50 +139,48 @@
  
  echo "[*] Copying binary..."
  
@@ -175,6 +175,7 @@ diff -aur afl-2.39b.orig/qemu_mode/build_qemu_support.sh afl-2.39b/qemu_mode/bui
 +do
 +  mkdir "../../afl-qemu-trace-${CPU_TARGET}"
 +  cp -f "${CPU_TARGET}-linux-user/qemu-${CPU_TARGET}" "../../afl-qemu-trace-${CPU_TARGET}/afl-qemu-trace" || exit 1
++  strip -s "../../afl-qemu-trace-${CPU_TARGET}/afl-qemu-trace"
 +done
 +
 +cp -f "../../afl-qemu-trace-$(uname -m)/afl-qemu-trace" "../../afl-qemu-trace" || exit 1
@@ -244,7 +245,7 @@ diff -aur afl-2.39b.orig/qemu_mode/build_qemu_support.sh afl-2.39b/qemu_mode/bui
  exit 0
 diff -aur afl-2.39b.orig/qemu_mode/patches/afl-qemu-cpu-inl.h afl-2.39b/qemu_mode/patches/afl-qemu-cpu-inl.h
 --- afl-2.39b.orig/qemu_mode/patches/afl-qemu-cpu-inl.h	2016-02-21 06:22:07.000000000 +0800
-+++ afl-2.39b/qemu_mode/patches/afl-qemu-cpu-inl.h	2017-02-26 11:08:25.337239954 +0800
++++ afl-2.39b/qemu_mode/patches/afl-qemu-cpu-inl.h	2017-02-27 09:45:52.160638265 +0800
 @@ -49,7 +49,7 @@
  #define AFL_QEMU_CPU_SNIPPET2 do { \
      if(tb->pc == afl_entry_point) { \
@@ -304,7 +305,7 @@ diff -aur afl-2.39b.orig/qemu_mode/patches/afl-qemu-cpu-inl.h afl-2.39b/qemu_mod
  
 diff -aur afl-2.39b.orig/types.h afl-2.39b/types.h
 --- afl-2.39b.orig/types.h	2016-08-03 02:35:04.000000000 +0800
-+++ afl-2.39b/types.h	2017-02-26 11:08:25.340573148 +0800
++++ afl-2.39b/types.h	2017-02-27 09:45:52.160638265 +0800
 @@ -76,7 +76,9 @@
  #define MEM_BARRIER() \
    asm volatile("" ::: "memory")

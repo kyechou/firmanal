@@ -21,7 +21,7 @@ source=(${pkgname}-${pkgver}.tgz::http://lcamtuf.coredump.cx/${pkgname}/releases
         ${pkgname}-${pkgver}.diff)
 sha512sums=('0df37fc8dea65d4130bc0fc8aaa23525bde4832c7202efb78ebe740d661546adee575b48fb94d851ef26293ca28a6ff818ab1dfd643c8e688aceb520e11229d0'
             '2ff7222ef250e4804f466f95952b6e5951c5e801d37fe9a126c00254f1837e199d9c30e5610ef5fb7b379a1e354b812a656d76d51b0f7a182960c5fafbfe7ac9'
-            '341cd473d7f9222865ac04ea34f56e175aa88bf3110dfbc5f41157a86122072ba30d31daf5706ddc48143166cdf7aa3c1827e02e75ee4f123bf1b20fa83e22e5')
+            '93fbba12286cd3094f9daec5c5e66e2b87b52b500eedd640643ecf741313cc29ef56e6846180116537af1758ea99c9403113b01959883924a58e0e43fbd81fcb')
 
 prepare() {
   rm -f $(readlink ${pkgname}-${pkgver}.tgz)
