@@ -53,9 +53,16 @@ for target in $(psql -U firmadyne -d firmware -c "select filename from object_to
 do
 	if [[ ! -d ${OUT_DIR}/${target} ]]; then
 		mkdir -p ${OUT_DIR}/${target}
-		AFL_PATH=${AFL_PATH} afl-fuzz -Q -m ${MEMORY} -i /usr/share/afl/testcases/others/text -o ${OUT_DIR}/${target} -L ${BIN_DIR}/ ${BIN_DIR}/${target}
+		AFL_PATH=${AFL_PATH} afl-fuzz -Q -M master -m ${MEMORY} -i /usr/share/afl/testcases/others/text -o ${OUT_DIR}/${target} -L ${BIN_DIR}/ ${BIN_DIR}/${target} &
+		AFL_PATH=${AFL_PATH} afl-fuzz -Q -S slave1 -m ${MEMORY} -i /usr/share/afl/testcases/others/text -o ${OUT_DIR}/${target} -L ${BIN_DIR}/ ${BIN_DIR}/${target} &
+		AFL_PATH=${AFL_PATH} afl-fuzz -Q -S slave2 -m ${MEMORY} -i /usr/share/afl/testcases/others/text -o ${OUT_DIR}/${target} -L ${BIN_DIR}/ ${BIN_DIR}/${target} &
+		AFL_PATH=${AFL_PATH} afl-fuzz -Q -S slave3 -m ${MEMORY} -i /usr/share/afl/testcases/others/text -o ${OUT_DIR}/${target} -L ${BIN_DIR}/ ${BIN_DIR}/${target} &
 	else
-		AFL_PATH=${AFL_PATH} afl-fuzz -Q -m ${MEMORY} -i - -o ${OUT_DIR}/${target} -L ${BIN_DIR}/ ${BIN_DIR}/${target}
+		AFL_PATH=${AFL_PATH} afl-fuzz -Q -M master -m ${MEMORY} -i - -o ${OUT_DIR}/${target} -L ${BIN_DIR}/ ${BIN_DIR}/${target} &
+		AFL_PATH=${AFL_PATH} afl-fuzz -Q -S slave1 -m ${MEMORY} -i - -o ${OUT_DIR}/${target} -L ${BIN_DIR}/ ${BIN_DIR}/${target} &
+		AFL_PATH=${AFL_PATH} afl-fuzz -Q -S slave2 -m ${MEMORY} -i - -o ${OUT_DIR}/${target} -L ${BIN_DIR}/ ${BIN_DIR}/${target} &
+		AFL_PATH=${AFL_PATH} afl-fuzz -Q -S slave3 -m ${MEMORY} -i - -o ${OUT_DIR}/${target} -L ${BIN_DIR}/ ${BIN_DIR}/${target} &
 	fi
+	wait
 done
 
