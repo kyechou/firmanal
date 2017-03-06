@@ -20,6 +20,8 @@ if [[ $# -ne 1 ]]; then
 	exit 1
 fi
 
+echo core | sudo tee /proc/sys/kernel/core_pattern >/dev/null
+
 IID=${1}
 BIN_DIR=${DYNAMIC_DIR}/afl/${IID}-bin
 OUT_DIR=${DYNAMIC_DIR}/afl/${IID}-out
