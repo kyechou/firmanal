@@ -262,6 +262,24 @@ sudo tunctl -d ${TAPDEV_%(I)i}
         output.append(template_2 % {'I' : i})
     return '\n'.join(output)
 
+def insert_ip (iid, ip):
+    import psycopg2
+    db = psycopg2.connect (dbname = "firmware",
+                           user = "firmadyne",
+                           password = "firmadyne",
+                           host = "127.0.0.1")
+    try:
+        cur = db.cursor()
+        cur.execute("UPDATE image SET ip='" + ip + "' WHERE id=" + iid)
+        db.commit()
+    except BaseException:
+        ret = False
+        traceback.print_exc()
+        db.rollback()
+    finally:
+        if cur:
+            cur.close()
+
 def qemuCmd(iid, network, arch, endianness):
     if arch == "mips":
         qemuEnvVars = ""
@@ -278,6 +296,10 @@ def qemuCmd(iid, network, arch, endianness):
             raise Exception("You didn't specify a valid endianness")
     else:
         raise Exception("Unsupported architecture")
+
+    # insert ip (GUEST_IP) into the database
+    if network:
+        insert_ip (str(iid), network[0][0])
 
     return QEMUCMDTEMPLATE % {'IID': iid,
                               'ARCHEND' : arch + endianness,
