@@ -9,7 +9,7 @@ pkgdesc='Security-oriented fuzzer using compile-time instrumentation and genetic
 url='https://github.com/kyechou/afl'
 arch=('i686' 'x86_64')
 license=('Apache')
-depends=('glibc' 'bash' 'clang' 'llvm')
+depends=('glibc' 'bash')
 optdepends=('gcc: gcc instrumentation support'
             'gnuplot: graph plotting support')
 makedepends=('gcc' 'wget' 'python' 'python2' 'libtool' 'automake' 'autoconf' 'coreutils' 'bison')
@@ -21,11 +21,10 @@ sha512sums=('SKIP')
 
 build() {
   cd ${pkgname}-${pkgver}
-  export CC=clang
-  export CXX=clang++
+  export CC=gcc
+  export CXX=g++
   export AFL_NO_X86=1
   make PREFIX=/usr
-  make -C llvm_mode PREFIX=/usr
   cd qemu_mode
   ./build_qemu_support.sh
   cd ..
