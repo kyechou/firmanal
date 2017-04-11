@@ -1,0 +1,56 @@
+# Maintainer: Levente Polyak <anthraxx[at]archlinux[dot]org>
+# Contributor: spider-mario <spidermario@free.fr>
+# Modified by: Wei-Cheng Wu <spencerwu85@gmail.com>
+
+pkgname=afl
+pkgver=2.39b
+pkgrel=1
+pkgdesc='Security-oriented fuzzer using compile-time instrumentation and genetic algorithms with network addon'
+arch=('i686' 'x86_64')
+url='http://lcamtuf.coredump.cx/afl/'
+license=('GPL')
+depends=('glibc' 'bash' 'clang' 'llvm')
+optdepends=('gcc: gcc instrumentation support'
+            'gnuplot: graph plotting support')
+makedepends=('gcc' 'wget' 'python' 'python2' 'libtool' 'automake' 'autoconf' 'coreutils' 'bison')
+provides=('american-fuzzy-lop')
+replaces=('american-fuzzy-lop')
+options=('!emptydirs' '!strip')
+source=(${pkgname}-${pkgver}.tgz::http://lcamtuf.coredump.cx/${pkgname}/releases/${pkgname}-${pkgver}.tgz
+        qemu-2.8.0.diff
+        ${pkgname}-${pkgver}-w-network.diff
+        README.diff)
+sha512sums=('0df37fc8dea65d4130bc0fc8aaa23525bde4832c7202efb78ebe740d661546adee575b48fb94d851ef26293ca28a6ff818ab1dfd643c8e688aceb520e11229d0'
+            '2ff7222ef250e4804f466f95952b6e5951c5e801d37fe9a126c00254f1837e199d9c30e5610ef5fb7b379a1e354b812a656d76d51b0f7a182960c5fafbfe7ac9'
+            '993f764ff2e5872f1f76e87f4a9b8ff53f65f279c8c5c0a5edf3071cd853862d0cb8a374b0beeda05f2fde64ea366ed0ca6cc856a671da34570a56d2fc149536'
+            'f6e4573025c403862d941a5c14a55cadb84ebe2077d4ad98f53ff3b1cb82938b4ebbe71cf4ce46505b9b8e92aaf87c59993795c15d0b19b700a5b907f7692bc7')
+
+prepare() {
+  rm -f $(readlink ${pkgname}-${pkgver}.tgz)
+  mv ${srcdir}/qemu-2.8.0.diff ${srcdir}/${pkgname}-${pkgver}/qemu_mode/patches
+  mv ${srcdir}/README.diff ${srcdir}/${pkgname}-${pkgver}/docs
+  patch -p0 < ${pkgname}-${pkgver}-w-network.diff
+  cd ${pkgname}-${pkgver}/docs
+  patch -p0 < README.diff
+  cd ../..
+}
+
+build() {
+  cd ${pkgname}-${pkgver}
+  export CC=gcc
+  export CXX=g++
+  export AFL_NO_X86=1
+  make PREFIX=/usr
+  cd qemu_mode
+  ./build_qemu_support.sh
+  cd ..
+}
+
+
+package() {
+  cd ${pkgname}-${pkgver}
+  AFL_NO_X86=1 make PREFIX=/usr DESTDIR="${pkgdir}" install
+  install -Dm 644 llvm_mode/README.llvm -t "${pkgdir}/usr/share/doc/${pkgname}"
+}
+
+# vim: ts=2 sw=2 et:
