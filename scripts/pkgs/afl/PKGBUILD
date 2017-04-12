@@ -1,6 +1,7 @@
 # Maintainer: Levente Polyak <anthraxx[at]archlinux[dot]org>
 # Contributor: spider-mario <spidermario@free.fr>
-# Modified by: Wei-Cheng Wu <spencerwu85@gmail.com>
+# Modified by: Kuan-Yen Chou <forendef2846@gmail.com>
+#              Wei-Cheng Wu <spencerwu85@gmail.com>
 
 pkgname=afl
 pkgver=2.39b
