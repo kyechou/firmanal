@@ -10,19 +10,20 @@ import magic
 import os
 import shutil
 
-wanted_mime = ['application/x-executable', 'application/x-object', 'application/x-sharedlib',
-               'text/x-php', 'text/x-shellscript']
+wanted_mime = ['application/x-executable', 'application/x-object', 'application/x-sharedlib']
 
 def get_priority (f, mime):
     filename = f.name[1:]
     perm = f.mode
+
+    if filename == '/bin/busybox':
+        return 0;
 
     # calculate the score...
     score = 0
     score += mime_exam (mime)
     score += permission_exam (perm)
     score += filename_exam (filename)
-
     return score
 
 def mime_exam (mime):
@@ -34,13 +35,8 @@ def mime_exam (mime):
 def filename_exam (filename):
     score = 0
 
-    if filename == '/bin/busybox':
-        return -60;
-
     if filename.endswith('.a'):
         score += 10
-    elif filename.endswith('.js'):
-        score += 50
 
     if filename.startswith('/home/'):
         score += 10
