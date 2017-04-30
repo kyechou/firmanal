@@ -7,9 +7,9 @@ pkgdesc='Closed-source compression utility for StuffIt archive files'
 url='http://my.smithmicro.com'
 arch=('i686' 'x86_64')
 license=('GPLv3')
-depends=()
-makedepends=('gcc' 'cmake' 'boost' 'qt5-base')
-source=('${pkgname}::git+https://github.com/nihilus/snowman.git')
+depends=('qt5-base')
+makedepends=('gcc' 'cmake' 'boost')
+source=(${pkgname}::git+https://github.com/nihilus/snowman.git)
 sha512sums=('SKIP')
 
 build() {
