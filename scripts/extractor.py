@@ -186,7 +186,7 @@ class Extractor(object):
             self._pool.map(self._extract_item, self._list)
         else:
             for item in self._list:
-                self._extract_item(item)
+                return self._extract_item(item)
 
     def _extract_item(self, path):
         """
@@ -194,7 +194,9 @@ class Extractor(object):
         method.
         """
 
-        ExtractionItem(self, path, 0).extract()
+        e = ExtractionItem(self, path, 0)
+        e.extract()
+        return (e.tag, e.repeated)
 
 class ExtractionItem(object):
     """
@@ -242,6 +244,8 @@ class ExtractionItem(object):
         self.terminate = False
         self.status = None
         self.update_status()
+
+        self.repeated = False
 
     def __del__(self):
         if self.database:
@@ -383,6 +387,7 @@ class ExtractionItem(object):
         # check if item is complete
         if self.get_status():
             self.printf(">> Skipping: completed!")
+            self.repeated = True
             return True
 
         # check if exceeding recursion depth
