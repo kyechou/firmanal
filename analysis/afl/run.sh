@@ -23,8 +23,8 @@ fi
 echo core | sudo tee /proc/sys/kernel/core_pattern >/dev/null
 
 IID=${1}
-BIN_DIR=${DYNAMIC_DIR}/afl/${IID}-bin
-OUT_DIR=${DYNAMIC_DIR}/afl/${IID}-out
+BIN_DIR="${RESULT_DIR}/${1}/afl/${IID}-bin"
+OUT_DIR="${RESULT_DIR}/${1}/afl/${IID}-out"
 MEMORY=2G
 
 [[ ! -d ${BIN_DIR} ]] && mkdir -p ${BIN_DIR}

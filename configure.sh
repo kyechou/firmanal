@@ -4,14 +4,13 @@
 MAIN_DIR=/home/niorehkids/firmanal
 
 # specify full paths to other directories
-STATIC_DIR=${MAIN_DIR}/anal/static
-DYNAMIC_DIR=${MAIN_DIR}/anal/dynamic
 BINARY_DIR=${MAIN_DIR}/bin
 DB_DIR=${MAIN_DIR}/db
 VM_DIR=${MAIN_DIR}/qemu/vm
 VM_SCRIPT_DIR=${MAIN_DIR}/qemu/scripts
 SCRIPT_DIR=${MAIN_DIR}/scripts
 FIRMWARE_DIR=${MAIN_DIR}/images
+RESULT_DIR=${MAIN_DIR}/results
 
 # functions to safely compute other paths
 

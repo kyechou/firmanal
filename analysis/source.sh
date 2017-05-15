@@ -21,15 +21,13 @@ if [[ $# -ne 1 ]]; then
 fi
 
 IID=${1}
-OUT_DIR=${STATIC_DIR}/dec-source/${IID}
+OUT_DIR="${RESULT_DIR}/${IID}/source"
 
-if [[ ! -d ${OUT_DIR} ]]; then
-	mkdir -p ${OUT_DIR}
-fi
+[[ ! -d ${OUT_DIR} ]] && mkdir -p ${OUT_DIR}
 
 # extract the files from the image tarball according to the database information
 echo "Extracting binaries......"
-tar xf ${FIRMWARE_DIR}/${IID}.tar.gz -C ${OUT_DIR} $(psql -U firmadyne -d firmware -c "select filename from object_to_image where iid=${IID} and score>0 and (mime='application/x-executable; charset=binary' or mime='application/x-object; charset=binary' or mime='application/x-sharedlib; charset=binary') order by score DESC;" | tail -n+3 | head -n-2 | sed -e 's/^ /\./')
+tar xf ${FIRMWARE_DIR}/${IID}.tar.gz -C ${OUT_DIR} $(psql -U firmadyne -d firmware -c "select filename from object_to_image where iid=${IID} and score > 0 and (mime='application/x-executable; charset=binary' or mime='application/x-object; charset=binary' or mime='application/x-sharedlib; charset=binary') order by score DESC;" | tail -n+3 | head -n-2 | sed -e 's/^ /\./')
 
 # decompile the executables
 echo "Decompiling binaries......"
