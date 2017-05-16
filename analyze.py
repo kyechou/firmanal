@@ -46,7 +46,10 @@ def extract(input_file):
     sys.path.append('./scripts')
     import extractor
     e = extractor.Extractor(input_file, 'images', True, False, False, '127.0.0.1', None)
-    return e.extract()
+    ocwd = os.getcwd()
+    (iid, repeated) = e.extract()
+    os.chdir(ocwd)
+    return (iid, repeated)
 
 def importdb(iid):
     sys.path.append('./db')
