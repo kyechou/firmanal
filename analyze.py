@@ -143,6 +143,8 @@ def main():
         makeimage(iid)
         infernetwork(iid)
     ip = getIP(iid)
+    if not ip:
+        print('warning: no interface detected')
 
     if arg.angr:
         a = Process(target=angr, args=(iid,))
