@@ -7,6 +7,21 @@ import subprocess
 from multiprocessing import Process
 
 
+def dbquery(query):
+    import psycopg2
+    db = psycopg2.connect(dbname = "firmware", user = "firmadyne", password = "firmadyne", host = "127.0.0.1")
+    ret = None
+    try:
+        cur = db.cursor()
+        cur.execute(query)
+    except BaseException:
+        traceback.print_exc()
+    finally:
+        if cur:
+            ret = cur.fetchall()
+            cur.close()
+    return ret
+
 def source(iid):
     script = os.getcwd() + '/analysis/source.sh'
     p = subprocess.run([script, str(iid)], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -83,6 +98,10 @@ def getIP(iid):
             cur.close()
     return ip
 
+def rootfs_extracted(iid):
+    query = 'select rootfs_extracted from image where id=' + iid + ';'
+    return dbquery(query)[0][0]
+
 def main():
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
@@ -105,6 +124,10 @@ def main():
     (iid, repeated) = extract(arg.input_file)
     if arg.id != None and iid != arg.id:
         print('error: frontend firmware ID and backend image ID conflict')
+        sys.exit(1)
+
+    if not rootfs_extracted(iid):
+        print('error: cannot find rootfs')
         sys.exit(1)
 
     # importdb
