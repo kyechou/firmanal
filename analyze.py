@@ -152,11 +152,11 @@ def main():
         f = Process(target=afl, args=(iid,))
         f.start()
 
-    if arg.netafl:
+    if arg.netafl and ip:
         n = Process(target=netafl, args=(iid, ip))
         n.start()
 
-    if arg.metasploit:
+    if arg.metasploit and ip:
         m = Process(target=metasploit, args=(iid, ip))
         m.start()
 
@@ -167,9 +167,9 @@ def main():
         a.join()
     if arg.afl:
         f.join()
-    if arg.netafl:
+    if arg.netafl and ip:
         n.join()
-    if arg.metasploit:
+    if arg.metasploit and ip:
         m.join()
 
 
