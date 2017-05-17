@@ -71,7 +71,6 @@ def runAFL(args, ENVS):
 
 def fuzz(target, bindir, outdir, ENVS):
     print('Fuzzing ' + target + '......')
-    outdir += '/' + target
     if not os.path.isdir(outdir):
         if os.path.exists(outdir):
             os.remove(outdir)
@@ -99,6 +98,71 @@ def fuzz(target, bindir, outdir, ENVS):
     s2.join()
     s3.join()
 
+    # process the output
+    merge_stats(outdir)
+
+def merge_stats(outdir):
+    ocwd = os.getcwd()
+    os.chdir(outdir)
+
+    raw = []
+    try:
+        raw += open('master/fuzzer_stats', 'r').read().split('\n')
+    except FileNotFoundError:
+        print('could not find ' + outdir + '/master/fuzzer_stats')
+    try:
+        raw += open('slave1/fuzzer_stats', 'r').read().split('\n')
+    except FileNotFoundError:
+        print('could not find ' + outdir + '/slave1/fuzzer_stats')
+    try:
+        raw += open('slave2/fuzzer_stats', 'r').read().split('\n')
+    except FileNotFoundError:
+        print('could not find ' + outdir + '/slave2/fuzzer_stats')
+    try:
+        raw += open('slave3/fuzzer_stats', 'r').read().split('\n')
+    except FileNotFoundError:
+        print('could not find ' + outdir + '/slave3/fuzzer_stats')
+    output = open('total_fuzzer_stats', 'w')
+
+    cycles_done = filter(lambda l: 'cycles_done' in l, raw)
+    num = 0
+    for each in cycles_done:
+        num += int(each.split(':')[1])
+    output.write('cycles_done       : ' + str(num) + '\n')
+
+    execs_done = filter(lambda l: 'execs_done' in l, raw)
+    num = 0
+    for each in execs_done:
+        num += int(each.split(':')[1])
+    output.write('execs_done        : ' + str(num) + '\n')
+
+    execs_per_sec = filter(lambda l: 'execs_per_sec' in l, raw)
+    num = 0
+    for each in cycles_done:
+        num += int(each.split(':')[1])
+    output.write('execs_per_sec     : ' + str(num) + '\n')
+
+    paths_total = filter(lambda l: 'paths_total' in l, raw)
+    num = 0
+    for each in cycles_done:
+        num += int(each.split(':')[1])
+    output.write('paths_total       : ' + str(num) + '\n')
+
+    unique_crashes = filter(lambda l: 'unique_crashes' in l, raw)
+    num = 0
+    for each in cycles_done:
+        num += int(each.split(':')[1])
+    output.write('unique_crashes    : ' + str(num) + '\n')
+
+    unique_hangs = filter(lambda l: 'unique_hangs' in l, raw)
+    num = 0
+    for each in cycles_done:
+        num += int(each.split(':')[1])
+    output.write('unique_hangs      : ' + str(num) + '\n')
+
+    output.close()
+    os.chdir(ocwd)
+
 
 def process(iid, resultdir):
     subprocess.run(['echo core | sudo tee /proc/sys/kernel/core_pattern >/dev/null'], shell=True)
@@ -122,7 +186,7 @@ def process(iid, resultdir):
     targets = reduce((lambda a, b: a + b), targets)
     targets = list(map((lambda a: '.' + a), targets))
     for target in targets:
-        fuzz(target, bindir, outdir, AFL_ENVS)
+        fuzz(target, bindir, outdir + '/' + target, AFL_ENVS)
 
 
 def main():
