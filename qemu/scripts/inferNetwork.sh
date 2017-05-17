@@ -43,8 +43,8 @@ else
     fi
 fi
 
-echo "Running firmware ${IID}: terminating after 30 secs..."
-timeout --preserve-status --signal SIGINT 30 "${VM_SCRIPT_DIR}/run.${ARCH}.sh" "${IID}"
+echo "Running firmware ${IID}: terminating after 60 secs..."
+timeout --preserve-status --signal SIGINT 60 "${VM_SCRIPT_DIR}/run.${ARCH}.sh" "${IID}"
 sleep 1
 
 echo "Inferring network..."
