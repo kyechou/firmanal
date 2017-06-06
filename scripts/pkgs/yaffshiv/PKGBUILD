@@ -8,12 +8,12 @@ url='https://github.com/devttys0/yaffshiv'
 arch=('i686' 'x86_64')
 license=('MIT')
 depends=('python')
-source=('${pkgname}::git+https://github.com/devttys0/yaffshiv.git')
+source=(${pkgname}::git+https://github.com/devttys0/yaffshiv.git)
 sha512sums=('SKIP')
 
 package() {
-  cd ${pkgdir}
-  python setup.py install
+  cd yaffshiv
+  python setup.py install --root="$pkgdir" --prefix=/usr --optimize=1
 }
 
 # vim: ts=2 sw=2 et:
