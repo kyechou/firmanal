@@ -7,8 +7,12 @@ pkgdesc='Closed-source compression utility for StuffIt archive files'
 url='http://my.smithmicro.com'
 arch=('i686' 'x86_64')
 license=('proprietary')
-source=('${pkgname}${pkgver}linux-i386.tar.gz::http://my.smithmicro.com/downloads/files/${pkgname}${pkgver}linux-i386.tar.gz')
+source=(${pkgname}${pkgver}linux-i386.tar.gz::http://my.smithmicro.com/downloads/files/${pkgname}${pkgver}linux-i386.tar.gz)
 sha512sums=('a1d4631c2d238b49c710816cd5ed8a01dcf52c29b870297b8dfd76fb0cb6e725c5b0f9d4a6c155c7b6980005df52fc4597632f72e90f00bf93ad80a28972270a')
+
+prepare() {
+  rm -f $(readlink ${pkgname}${pkgver}linux-i386.tar.gz)
+}
 
 build() {
   cd man/man1/
@@ -16,9 +20,9 @@ build() {
 }
 
 package() {
-  install -Dm 755 bin -t "${pkgdir}/usr"
-  install -Dm 644 doc -t "${pkgdir}/usr/share"
-  install -Dm 644 man -t "${pkgdir}/usr/share"
+  cp -r bin "${pkgdir}/usr"
+  cp -r doc "${pkgdir}/usr/share"
+  cp -r man "${pkgdir}/usr/share"
 }
 
 # vim: ts=2 sw=2 et:
