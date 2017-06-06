@@ -184,3 +184,7 @@ get_vm () {
 
     echo "${VM_DIR}/${IID}/"
 }
+
+get_device () {
+    echo "/dev/mapper/loop0p1"
+}
