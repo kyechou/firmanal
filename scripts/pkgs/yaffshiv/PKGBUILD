@@ -1,0 +1,19 @@
+# Contributor: Kuan-Yen Chou <forendef2846@gmail.com>
+
+pkgname=yaffshiv
+pkgver=20160106
+pkgrel=1
+pkgdesc='A simple YAFFS file system parser and extractor, written in Python'
+url='https://github.com/devttys0/yaffshiv'
+arch=('i686' 'x86_64')
+license=('MIT')
+depends=('python')
+source=('${pkgname}::git+https://github.com/devttys0/yaffshiv.git')
+sha512sums=('SKIP')
+
+package() {
+  cd ${pkgdir}
+  python setup.py install
+}
+
+# vim: ts=2 sw=2 et:

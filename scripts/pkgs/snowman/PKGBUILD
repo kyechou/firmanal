@@ -1,0 +1,35 @@
+# Contributor: Kuan-Yen Chou <forendef2846@gmail.com>
+
+pkgname=snowman
+pkgver=520.611
+pkgrel=1
+pkgdesc='Closed-source compression utility for StuffIt archive files'
+url='http://my.smithmicro.com'
+arch=('i686' 'x86_64')
+license=('GPLv3')
+depends=()
+makedepends=('gcc' 'cmake' 'boost' 'qt5-base')
+source=('${pkgname}::git+https://github.com/nihilus/snowman.git')
+sha512sums=('SKIP')
+
+build() {
+  cd ${pkgname}
+  mkdir build
+  cd build
+  export BOOST_ROOT=/usr/include/boost
+  mkdir qt
+  ln -s /usr/include/qt qt/include
+  ln -s /usr/lib/qt qt/lib
+  export QTDIR=${srcdir}/${pkgname}/build/qt
+  cmake -D CMAKE_BUILD_TYPE=Release -D IDA_PLUGIN_ENABLED=NO -D NC_QT5=YES -D CMAKE_INSTALL_PREFIX=${pkgdir}/usr ../src
+  cmake --build .
+  unlink ${QTDIR}/include
+  unlink ${QTDIR}/lib
+}
+
+package() {
+  cd ${pkgname}/build
+  cmake --build . --target install
+}
+
+# vim: ts=2 sw=2 et:
