@@ -1,0 +1,40 @@
+# Maintainer: Levente Polyak <anthraxx[at]archlinux[dot]org>
+# Contributor: spider-mario <spidermario@free.fr>
+#              Kuan-Yen Chou <forendef2846@gmail.com>
+
+pkgname=afl
+pkgver=2.42b
+pkgrel=1
+pkgdesc='Security-oriented fuzzer using compile-time instrumentation and genetic algorithms'
+url='https://github.com/kyechou/afl'
+arch=('i686' 'x86_64')
+license=('Apache')
+depends=('glibc' 'bash' 'clang' 'llvm')
+optdepends=('gcc: gcc instrumentation support'
+            'gnuplot: graph plotting support')
+makedepends=('gcc' 'wget' 'python' 'python2' 'libtool' 'automake' 'autoconf' 'coreutils' 'bison')
+provides=('american-fuzzy-lop')
+replaces=('american-fuzzy-lop')
+options=('!emptydirs' '!strip')
+source=(${pkgname}-${pkgver}::git+https://github.com/kyechou/afl)
+sha512sums=('SKIP')
+
+build() {
+  cd ${pkgname}-${pkgver}
+  export CC=clang
+  export CXX=clang++
+  export AFL_NO_X86=1
+  make PREFIX=/usr
+  make -C llvm_mode PREFIX=/usr
+  cd qemu_mode
+  ./build_qemu_support.sh
+  cd ..
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+  AFL_NO_X86=1 make PREFIX=/usr DESTDIR="${pkgdir}" install
+  install -Dm 644 llvm_mode/README.llvm -t "${pkgdir}/usr/share/doc/${pkgname}"
+}
+
+# vim: ts=2 sw=2 et:
