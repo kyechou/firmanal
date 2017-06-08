@@ -25,7 +25,11 @@ sudo systemctl enable postgresql.service
 sudo systemctl start postgresql.service
 sudo -u postgres createuser firmadyne -s
 sudo -u postgres createdb -O firmadyne -U firmadyne firmware
-sudo -u postgres psql -d firmware < ${DB_DIR}/schema
+sudo -u postgres psql -d firmware < ${DB_DIR}/firmware_schema
+sudo -u postgres createdb -O firmadyne -U firmadyne exploit
+sudo -u postgres psql -d exploit < ${DB_DIR}/exploit_schema
+sudo -u postgres psql -d exploit -c "\copy module FROM '${DB_DIR}/module.csv' DELIMITER ',' CSV;"
+sudo -u postgres psql -d exploit -c "\copy score FROM '${DB_DIR}/score.csv' DELIMITER ',' CSV;"
 
 ## install dependencies
 sudo pacman -S --needed --noconfirm bc fakeroot curl git openbsd-netcat nmap net-snmp util-linux fuse binwalk python-crypto python-capstone squashfs-tools python-magic python-psycopg2 qemu qemu-arch-extra mtd-utils tar unrar xz gzip bzip2 p7zip arj lhasa cabextract arj cpio python-opengl sleuthkit busybox

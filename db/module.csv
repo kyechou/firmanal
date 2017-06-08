@@ -1,0 +1,74 @@
+0,exploits/linux/http/airties_login_cgi_bof,Airties login-cgi Buffer Overflow,CVE-2015-2797
+1,exploits/linux/http/belkin_login_bof,Belkin Play N750 login.cgi Buffer Overflow,CVE-2014-1635
+2,exploits/linux/http/ddwrt_cgibin_exec,DD-WRT HTTP Daemon Arbitrary Command Execution,CVE-2009-2765
+3,exploits/linux/http/dlink_authentication_cgi_bof,D-Link authentication.cgi Buffer Overflow,CVE-2013-7389
+4,exploits/linux/http/dlink_command_php_exec_noauth,D-Link Devices Unauthenticated Remote Command Execution,
+5,exploits/linux/http/dlink_diagnostic_exec_noauth,D-Link DIR-645 / DIR-815 diagnostic.php Command Execution,
+6,exploits/linux/http/dlink_dir300_exec_telnet,D-Link Devices Unauthenticated Remote Command Execution,
+7,exploits/linux/http/dlink_dir605l_captcha_bof,D-Link DIR-605L Captcha Handling Buffer Overflow,
+8,exploits/linux/http/dlink_dir615_up_exec,D-Link DIR615h OS Command Injection,
+9,exploits/linux/http/dlink_dspw110_cookie_noauth_exec,D-Link Cookie Command Execution,
+10,exploits/linux/http/dlink_dspw215_info_cgi_bof,D-Link info.cgi POST Request Buffer Overflow,
+11,exploits/linux/http/dlink_hedwig_cgi_bof,D-Link hedwig.cgi Buffer Overflow in Cookie Header,CVE-2013-7389
+12,exploits/linux/http/dlink_hnap_bof,D-Link HNAP Request Remote Buffer Overflow,CVE-2014-3936
+13,exploits/linux/http/dlink_hnap_header_exec_noauth,D-Link Devices HNAP SOAPAction-Header Command Execution,
+14,exploits/linux/http/dlink_upnp_exec_noauth,D-Link Devices UPnP SOAP Command Execution,
+15,exploits/router/dreambox_openpli_shell,,
+16,exploits/linux/http/fritzbox_echo_exec,Fritz!Box Webcm Unauthenticated Command Injection,
+17,exploits/linux/http/linksys_apply_cgi,Linksys WRT54 Access Point apply.cgi Buffer Overflow,CVE-2005-2799
+18,exploits/linux/http/linksys_e1500_apply_exec,Linksys E1500/E2500 apply.cgi Remote Command Injection,CVE-2013-2679
+19,exploits/linux/http/linksys_themoon_exec,Linksys E-Series TheMoon Remote Command Injection,
+20,exploits/linux/http/linksys_wrt54gl_apply_exec,Linksys WRT54GL apply.cgi Command Execution,CVE-2013-2679
+21,exploits/linux/http/linksys_wrt110_cmd_exec,Linksys Devices pingstr Remote Command Injection,CVE-2013-3568
+22,exploits/linux/http/linksys_wrt160nv2_apply_exec,Linksys WRT160nv2 apply.cgi Remote Command Injection,CVE-2013-2678
+23,exploits/linux/http/multi_ncc_ping_exec,D-Link/TRENDnet NCC Service Command Injection,CVE-2015-1187
+24,exploits/linux/http/netgear_dgn1000b_setup_exec,Netgear DGN1000B setup.cgi Remote Command Execution,
+25,exploits/linux/http/netgear_dgn2200b_pppoe_exec,Netgear DGN2200B pppoe.cgi Remote Command Execution,
+26,exploits/linux/http/netgear_readynas_exec,NETGEAR ReadyNAS Perl Code Evaluation,CVE-2013-2751
+27,exploits/linux/http/realtek_miniigd_upnp_exec_noauth,Realtek SDK Miniigd UPnP SOAP Command Execution,CVE-2014-8361
+28,exploits/linux/http/seagate_nas_php_exec_noauth,Seagate Business NAS Unauthenticated Remote Command Execution,CVE-2014-8684
+29,exploits/linux/misc/sercomm_exec,SerComm Device Remote Code Execution,
+30,exploits/linux/upnp/dlink_upnp_msearch_exec,D-Link Unauthenticated UPnP M-SEARCH Multicast Command Injection,
+31,exploits/linux/upnp/miniupnpd_soap_bof,MiniUPnPd 1.0 Stack Buffer Overflow Remote Code Execution,CVE-2013-0230
+32,exploits/multi/http/cisco_dcnm_upload,Cisco Prime Data Center Network Manager Arbitrary File Upload,CVE-2013-5486
+33,exploits/multi/upnp/libupnp_ssdp_overflow,Portable UPnP SDK unique_service_name() Remote Code Execution,CVE-2012-5958
+34,exploits/unix/dhcp/bash_environment,Dhclient Bash Environment Variable Injection (Shellshock),CVE-2014-6271
+35,auxiliary/router/cisco_secure_acs_bypass,Cisco Secure ACS Unauthorized Password Change,CVE-2011-0951
+36,auxiliary/admin/cisco/vpn_3000_ftp_bypass,Cisco VPN Concentrator 3000 FTP Unauthorized Administrative Access,CVE-2006-4313
+37,auxiliary/admin/http/arris_motorola_surfboard_backdoor_xss,Arris / Motorola Surfboard SBG6580 Web Interface Takeover,CVE-2015-0964
+38,auxiliary/admin/http/dlink_dir_300_600_exec_noauth,D-Link DIR-600 / DIR-300 Unauthenticated Remote Command Execution,
+39,auxiliary/admin/http/dlink_dir_645_password_extractor,D-Link DIR 645 Password Extractor,
+40,auxiliary/admin/http/dlink_dsl320b_password_extractor,D-Link DSL 320B Password Extractor,CVE-2005-0853
+41,auxiliary/admin/http/intersil_pass_reset,Intersil (Boa) HTTPd Basic Authentication Password Reset,CVE-2007-4915
+42,auxiliary/admin/http/linksys_e1500_e2500_exec,Linksys E1500/E2500 Remote Command Execution,CVE-2013-2678
+43,exploits/router/linksys_tmunblock_admin_reset_bof,Linksys WRT120N tmUnblock Stack Buffer Overflow,
+44,auxiliary/admin/http/linksys_wrt54gl_exec,Linksys WRT54GL Remote Command Execution,CVE-2013-2679
+45,auxiliary/admin/http/netgear_soap_password_extractor,Netgear Unauthenticated SOAP Password Extractor,
+46,auxiliary/admin/http/zyxel_admin_password_extractor,ZyXEL GS1510-16 Password Extractor,
+47,auxiliary/admin/misc/sercomm_dump_config,SerComm Device Configuration Dump,
+48,auxiliary/admin/motorola/wr850g_cred,Motorola WR850G v4.03 Credentials,CVE-2004-1550
+49,auxiliary/admin/vxworks/apple_airport_extreme_password,Apple Airport Extreme Password Extraction (WDBRPC),
+50,auxiliary/admin/vxworks/dlink_i2eye_autoanswer,D-Link i2eye Video Conference AutoAnswer (WDBRPC),
+51,auxiliary/admin/vxworks/wdbrpc_memory_dump,VxWorks WDB Agent Remote Memory Dump,
+52,auxiliary/admin/vxworks/wdbrpc_reboot,VxWorks WDB Agent Remote Reboot,
+53,auxiliary/dos/cisco/ios_http_percentpercent,Cisco IOS HTTP GET /%% Request Denial of Service,CVE-2000-0380
+54,auxiliary/dos/dhcp/isc_dhcpd_clientid,ISC DHCP Zero Length ClientID Denial of Service Module,CVE-2010-2156 
+55,auxiliary/router/ntpd_reserved_dos,,
+56,auxiliary/dos/upnp/miniupnpd_dos,MiniUPnPd 1.4 Denial of Service (DoS) Exploit,CVE-2013-0229
+57,auxiliary/scanner/http/cisco_ios_auth_bypass,Cisco IOS HTTP Unauthorized Administrative Access,CVE-2001-0537
+58,auxiliary/scanner/http/cisco_nac_manager_traversal,Cisco Network Access Manager Directory Traversal Vulnerability,CVE-2011-3305
+59,auxiliary/scanner/http/dlink_user_agent_backdoor,D-Link User-Agent Backdoor Scanner,
+60,auxiliary/scanner/http/linksys_e1500_traversal,Linksys E1500 Directory Traversal Vulnerability,
+61,auxiliary/scanner/http/goahead_traversal,Embedthis GoAhead Embedded Web Server Directory Traversal,CVE-2014-9707
+62,auxiliary/scanner/http/litespeed_source_disclosure,LiteSpeed Source Code Disclosure/Download,CVE-2010-2333
+63,auxiliary/scanner/http/netgear_sph200d_traversal,Netgear SPH200D Directory Traversal Vulnerability,
+64,auxiliary/scanner/ssl/openssl_ccs,OpenSSL Server-Side ChangeCipherSpec Injection Scanner,CVE-2014-0224
+65,auxiliary/scanner/ssl/openssl_heartbleed,OpenSSL Heartbeat (Heartbleed) Information Leak,CVE-2014-0160
+66,auxiliary/scanner/http/allegro_rompager_misfortune_cookie,Allegro Software RomPager 'Misfortune Cookie' (CVE-2014-9222) Scanner,CVE-2014-9222
+67,auxiliary/dos/dns/bind_tkey,BIND TKEY Query Denial of Service,CVE-2015-5477
+68,exploits/linux/http/synology_dsm_sliceupload_exec_noauth,Synology DiskStation Manager SLICEUPLOAD Remote Command Execution,CVE-2013-6955
+69,auxiliary/scanner/snmp/sbg6580_enum,ARRIS / Motorola SBG6580 Cable Modem SNMP Enumeration Module,
+70,auxiliary/scanner/snmp/arris_dg950,Arris DG950A Cable Modem Wifi Enumeration,
+71,exploits/linux/http/dlink_hnap_login_bof,Dlink DIR Routers Unauthenticated HNAP Login Stack Buffer Overflow,CVE-2016-6563
+72,exploit/linux/http/netgear_r7000_cgibin_exec,Netgear R7000 and R6400 cgi-bin Command Injection,CVE-2016-6277
+73,exploit/linux/http/netgear_wnr2000_rce,NETGEAR WNR2000v5 (Un)authenticated hidden_lang_avi Stack Overflow,CVE-2016-10174
