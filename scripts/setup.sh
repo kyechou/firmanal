@@ -28,12 +28,15 @@ sudo -u postgres createdb -O firmadyne -U firmadyne firmware
 sudo -u postgres psql -d firmware < ${DB_DIR}/firmware_schema
 sudo -u postgres createdb -O firmadyne -U firmadyne exploit
 sudo -u postgres psql -d exploit < ${DB_DIR}/exploit_schema
-sudo -u postgres psql -d exploit -c "\copy module FROM '${DB_DIR}/module.csv' DELIMITER ',' CSV;"
-sudo -u postgres psql -d exploit -c "\copy score FROM '${DB_DIR}/score.csv' DELIMITER ',' CSV;"
+cp ${DB_DIR}/module.csv /tmp/
+cp ${DB_DIR}/score.csv /tmp/
+sudo -u postgres psql -d exploit -c "\copy module FROM /tmp/module.csv DELIMITER ',' CSV;"
+sudo -u postgres psql -d exploit -c "\copy score FROM /tmp/score.csv DELIMITER ',' CSV;"
+rm -f /tmp/{module,score}.csv
 
 ## install dependencies
 sudo pacman -S --needed --noconfirm bc fakeroot curl git openbsd-netcat nmap net-snmp util-linux fuse binwalk python-crypto python-capstone squashfs-tools python-magic python-psycopg2 qemu qemu-arch-extra mtd-utils tar unrar xz gzip bzip2 p7zip arj lhasa cabextract arj cpio python-opengl sleuthkit busybox
-yaourt -S --needed --noconfirm firmware-mod-kit flawfinder jefferson-git multipath-tools sasquatch ubi_reader uml_utilities
+yaourt -S --needed --noconfirm firmware-mod-kit flawfinder jefferson-git multipath-tools ubi_reader uml_utilities
 ${SCRIPT_DIR}/build_pkgs.sh
 
 ## Metasploit Framework
