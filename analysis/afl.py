@@ -63,11 +63,16 @@ def setenvs(iid):
 
 def runAFL(args, ENVS):
     p = subprocess.Popen(args, env = ENVS)
-    try:
-        p.wait(timeout=20 * 60) # 20 min
-    except subprocess.TimeoutExpired:
-        # may check the status here to decide whether to terminate
-        p.terminate()
+    while True:
+        try:
+            p.wait(timeout=30 * 60) # 30 min
+        except subprocess.TimeoutExpired:
+            # check the status to decide whether to continue or terminate
+            # args[9] is the outdir
+            if num_of_hangs(args[9]) > 0 or num_of_crashes(args[9]) > 0:
+                continue
+            else:
+                p.terminate()
 
 def fuzz(target, bindir, outdir, ENVS):
     print('Fuzzing ' + target + '......')
@@ -162,6 +167,67 @@ def merge_stats(outdir):
 
     output.close()
     os.chdir(ocwd)
+
+def num_of_crashes(outdir):
+    ocwd = os.getcwd()
+    os.chdir(outdir)
+
+    raw = []
+    try:
+        raw += open('master/fuzzer_stats', 'r').read().split('\n')
+    except FileNotFoundError:
+        print('could not find ' + outdir + '/master/fuzzer_stats')
+    try:
+        raw += open('slave1/fuzzer_stats', 'r').read().split('\n')
+    except FileNotFoundError:
+        print('could not find ' + outdir + '/slave1/fuzzer_stats')
+    try:
+        raw += open('slave2/fuzzer_stats', 'r').read().split('\n')
+    except FileNotFoundError:
+        print('could not find ' + outdir + '/slave2/fuzzer_stats')
+    try:
+        raw += open('slave3/fuzzer_stats', 'r').read().split('\n')
+    except FileNotFoundError:
+        print('could not find ' + outdir + '/slave3/fuzzer_stats')
+
+    unique_crashes = filter(lambda l: 'unique_crashes' in l, raw)
+    num = 0
+    for each in cycles_done:
+        num += int(each.split(':')[1])
+
+    os.chdir(ocwd)
+    return num
+
+
+def num_of_hangs(outdir):
+    ocwd = os.getcwd()
+    os.chdir(outdir)
+
+    raw = []
+    try:
+        raw += open('master/fuzzer_stats', 'r').read().split('\n')
+    except FileNotFoundError:
+        print('could not find ' + outdir + '/master/fuzzer_stats')
+    try:
+        raw += open('slave1/fuzzer_stats', 'r').read().split('\n')
+    except FileNotFoundError:
+        print('could not find ' + outdir + '/slave1/fuzzer_stats')
+    try:
+        raw += open('slave2/fuzzer_stats', 'r').read().split('\n')
+    except FileNotFoundError:
+        print('could not find ' + outdir + '/slave2/fuzzer_stats')
+    try:
+        raw += open('slave3/fuzzer_stats', 'r').read().split('\n')
+    except FileNotFoundError:
+        print('could not find ' + outdir + '/slave3/fuzzer_stats')
+
+    unique_hangs = filter(lambda l: 'unique_hangs' in l, raw)
+    num = 0
+    for each in cycles_done:
+        num += int(each.split(':')[1])
+
+    os.chdir(ocwd)
+    return num
 
 
 def process(iid, resultdir):
