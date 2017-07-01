@@ -2,7 +2,9 @@
 
 import argparse
 import sys
+import re
 import os
+import locale
 import subprocess
 from multiprocessing import Process
 
@@ -23,10 +25,41 @@ def dbquery(query):
     return ret
 
 def source(iid):
+    # source code analysis
     script = os.getcwd() + '/analysis/source.sh'
     p = subprocess.run([script, str(iid)], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     print(p.stdout.decode())
     print(p.stderr.decode())
+
+    # calculate the score of security
+    resultdir = os.getcwd() + '/results/' + str(iid) + '/source'
+    firmware_score = 0
+    for (rootdir, dirs, files) in os.walk(resultdir):
+        for outfile in files:
+            if outfile.endswith('.dec.c.out'):
+                file_score = 0
+                # calculate the score of this file
+                for line in open(rootdir + '/' + outfile, "r"):
+                    line = line.strip()
+                    if re.search('Hits/KSLOC@level\+', line):
+                        sp = line.split()
+                        file_score += float(sp[3])
+                        file_score += float(sp[5])
+                        file_score += float(sp[7])
+                        file_score += float(sp[9])
+                        file_score += float(sp[11])
+                        file_score += float(sp[13])
+                # file_score transition function
+                file_score = 10 - 600 / (file_score + 60)
+                # store the file_score information in the database
+                #print(rootdir + '/' + outfile + ": " + str(file_score))
+
+                firmware_score += file_score
+
+    # firmware_score transition function
+    firmware_score = 10 - 500 / (firmware_score + 50)
+    # store the firmware_score information in the database
+    #print(str(iid) + ": " + firmware_score)
 
 def angr(iid):
     print('warning: the Angr function is under development')
@@ -135,6 +168,7 @@ def main():
         importdb(iid)
 
     if arg.source:
+        iid = arg.id
         s = Process(target=source, args=(iid,))
         s.start()
 

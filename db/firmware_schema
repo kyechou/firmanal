@@ -49,7 +49,7 @@ CREATE TABLE image (
     kernel_extracted boolean DEFAULT false,
     arch character varying,
     kernel_version character varying,
-	ip character varying
+    ip character varying
 );
 
 
