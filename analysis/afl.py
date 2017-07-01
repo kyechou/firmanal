@@ -104,7 +104,12 @@ def fuzz(target, bindir, outdir, ENVS):
     s3.join()
 
     # process the output
-    merge_stats(outdir)
+    (num_uniq_c, num_uniq_h) = merge_stats(outdir)
+
+    # calculate the file_score and return it
+    file_score = 10 - 490 / (num_uniq_c * 196 + num_uniq_h + 49)
+    # TODO: store the file_score informations in the database
+    return file_score
 
 def merge_stats(outdir):
     ocwd = os.getcwd()
@@ -157,16 +162,19 @@ def merge_stats(outdir):
     num = 0
     for each in cycles_done:
         num += int(each.split(':')[1])
+    num_uniq_c = num
     output.write('unique_crashes    : ' + str(num) + '\n')
 
     unique_hangs = filter(lambda l: 'unique_hangs' in l, raw)
     num = 0
     for each in cycles_done:
         num += int(each.split(':')[1])
+    num_uniq_h = num
     output.write('unique_hangs      : ' + str(num) + '\n')
 
     output.close()
     os.chdir(ocwd)
+    return (num_uniq_c, num_uniq_h)
 
 def num_of_crashes(outdir):
     ocwd = os.getcwd()
@@ -251,8 +259,13 @@ def process(iid, resultdir):
     targets = dbquery(query)
     targets = reduce((lambda a, b: a + b), targets)
     targets = list(map((lambda a: '.' + a), targets))
+    firmware_score = 0
     for target in targets:
-        fuzz(target, bindir, outdir + '/' + target, AFL_ENVS)
+        file_score = fuzz(target, bindir, outdir + '/' + target, AFL_ENVS)
+        firmware_score += file_score
+    firmware_score = 10 - 20 / (firmware_score + 2)
+    # TODO: store the firmware_score informations in the database
+    print('firmware_score: ' + str(firmware_score))
 
 
 def main():
